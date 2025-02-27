@@ -1,0 +1,113 @@
+---
+title: Download
+description: "Download videos from YouTube or other supported platforms"
+---
+
+# Download Command
+
+The `download` command allows you to download videos from YouTube or other supported platforms using yt-dlp. This is useful when you want to download a video without processing it immediately.
+
+## Usage
+
+```bash
+transfer-learning download URL [OPTIONS]
+```
+
+## Arguments
+
+| Argument | Description |
+| -------- | ----------- |
+| `URL` | URL to download video from |
+
+## Options
+
+| Option | Description | Default |
+| ------ | ----------- | ------- |
+| `--output-dir TEXT` | Output directory for downloaded videos | `videos/` |
+| `--quality TEXT` | Video quality to download (best, 1080p, 720p, etc.) | best |
+| `--format TEXT` | Video format (mp4, webm, etc.) | mp4 |
+| `--audio-only` | Download audio only | False |
+| `--subtitles` | Download subtitles if available | False |
+| `--language TEXT` | Subtitle language code | en |
+| `--help` | Show help message and exit | - |
+
+## Examples
+
+### Download a YouTube video
+
+```bash
+transfer-learning download "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+```
+
+### Download a video with specific quality
+
+```bash
+transfer-learning download "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --quality 720p
+```
+
+### Download audio only
+
+```bash
+transfer-learning download "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --audio-only
+```
+
+### Download with subtitles
+
+```bash
+transfer-learning download "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --subtitles
+```
+
+## Output
+
+The command downloads the video to the specified output directory:
+
+```
+output_dir/
+└── video_title.mp4
+```
+
+If subtitles are requested, they will be saved alongside the video:
+
+```
+output_dir/
+├── video_title.mp4
+└── video_title.en.vtt
+```
+
+## Supported Platforms
+
+The `download` command supports various video platforms through yt-dlp, including:
+
+- YouTube
+- Vimeo
+- Dailymotion
+- Facebook
+- Twitter
+- Instagram
+- TikTok
+- And many more
+
+## Quality Options
+
+The `--quality` option accepts various formats:
+
+- `best`: Best available quality
+- `worst`: Worst available quality
+- Resolution: `1080p`, `720p`, `480p`, `360p`, `240p`, `144p`
+- Format code: `137+140`, `22`, etc. (advanced usage)
+
+## Format Options
+
+The `--format` option specifies the container format:
+
+- `mp4`: MP4 format (most compatible)
+- `webm`: WebM format
+- `mkv`: Matroska format
+- `m4a`: M4A audio format (when using `--audio-only`)
+- `mp3`: MP3 audio format (when using `--audio-only`)
+
+## Related Commands
+
+- [Process YouTube](/cli/process-youtube)
+- [YouTube Guide](/cli/youtube-guide)
+- [Process Video](/cli/process-video) 

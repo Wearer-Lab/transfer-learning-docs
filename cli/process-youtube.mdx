@@ -1,0 +1,120 @@
+---
+title: Process YouTube
+description: "Download and process a YouTube video"
+---
+
+# Process YouTube Command
+
+The `process-youtube` command downloads a video from YouTube and processes it, extracting frames and analyzing their content. This is similar to the `process-video` command but works with YouTube URLs instead of local files.
+
+## Usage
+
+```bash
+transfer-learning process-youtube URL [OPTIONS]
+```
+
+## Arguments
+
+| Argument | Description |
+| -------- | ----------- |
+| `URL` | YouTube video URL |
+
+## Options
+
+| Option | Description | Default |
+| ------ | ----------- | ------- |
+| `--output-dir TEXT` | Output directory for results | `data/` |
+| `--batch-size INTEGER` | Number of frames to process in each batch | From config |
+| `--max-concurrent INTEGER` | Maximum number of concurrent batches | From config |
+| `--frame-interval INTEGER` | Interval between frame extractions in seconds | 30 |
+| `--skip-existing` | Skip processing if output already exists | False |
+| `--force` | Force processing even if output already exists | False |
+| `--quality TEXT` | Video quality to download (best, 1080p, 720p, etc.) | best |
+| `--help` | Show help message and exit | - |
+
+## Examples
+
+### Process a YouTube video
+
+```bash
+transfer-learning process-youtube "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+```
+
+### Process a YouTube video with custom frame interval
+
+```bash
+transfer-learning process-youtube "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --frame-interval 10
+```
+
+### Process a YouTube video with specific quality
+
+```bash
+transfer-learning process-youtube "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --quality 720p
+```
+
+## Output
+
+The command creates a directory structure in the output directory with the following components:
+
+```
+output_dir/
+├── video_title/
+│   ├── frames/
+│   │   ├── frame_0001.jpg
+│   │   ├── frame_0002.jpg
+│   │   └── ...
+│   ├── metadata.json
+│   ├── analysis.json
+│   └── video.mp4
+```
+
+- `frames/`: Directory containing extracted frames as JPEG images
+- `metadata.json`: Metadata about the video and extraction process
+- `analysis.json`: Analysis of the extracted frames
+- `video.mp4`: The downloaded video file
+
+## Metadata Format
+
+The `metadata.json` file contains information about the video and the extraction process:
+
+```json
+{
+  "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  "video_title": "Video Title",
+  "channel": "Channel Name",
+  "upload_date": "20210101",
+  "duration": 120.5,
+  "frame_count": 10,
+  "frame_interval": 30,
+  "resolution": {
+    "width": 1920,
+    "height": 1080
+  },
+  "fps": 30,
+  "extraction_time": "2023-02-25T12:34:56",
+  "processing_time": 45.2
+}
+```
+
+## YouTube URL Formats
+
+The command supports various YouTube URL formats:
+
+- Standard: `https://www.youtube.com/watch?v=VIDEO_ID`
+- Short: `https://youtu.be/VIDEO_ID`
+- With timestamp: `https://www.youtube.com/watch?v=VIDEO_ID&t=123s`
+- Playlist item: `https://www.youtube.com/watch?v=VIDEO_ID&list=PLAYLIST_ID`
+
+## Next Steps
+
+After processing a YouTube video, you can:
+
+1. [Generate a guide](/cli/generate-guide) from the processed data
+2. [Transcribe the audio](/cli/transcribe) from the video
+3. [Analyze the content](/cli/analyze) in more detail
+
+## Related Commands
+
+- [YouTube Guide](/cli/youtube-guide)
+- [Process Video](/cli/process-video)
+- [Download](/cli/download) 

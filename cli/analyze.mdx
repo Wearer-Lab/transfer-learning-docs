@@ -1,0 +1,144 @@
+---
+title: Analyze
+description: "Perform detailed analysis of video content"
+---
+
+# Analyze Command
+
+The `analyze` command performs a comprehensive analysis of a video file or YouTube video, combining frame extraction, content analysis, and audio transcription. This provides a complete understanding of the video content.
+
+## Usage
+
+```bash
+transfer-learning analyze PATH [OPTIONS]
+```
+
+## Arguments
+
+| Argument | Description |
+| -------- | ----------- |
+| `PATH` | Path to video file or YouTube URL |
+
+## Options
+
+| Option | Description | Default |
+| ------ | ----------- | ------- |
+| `--output-dir TEXT` | Output directory for analysis results | `analysis/` |
+| `--batch-size INTEGER` | Number of frames to process in each batch | From config |
+| `--max-concurrent INTEGER` | Maximum number of concurrent batches | From config |
+| `--model TEXT` | Whisper model to use for transcription | base |
+| `--device TEXT` | Device to use for transcription (cpu, cuda) | cpu |
+| `--frame-interval INTEGER` | Interval between frame extractions in seconds | 30 |
+| `--skip-existing` | Skip processing if output already exists | False |
+| `--force` | Force processing even if output already exists | False |
+| `--help` | Show help message and exit | - |
+
+## Examples
+
+### Analyze a local video file
+
+```bash
+transfer-learning analyze path/to/video.mp4
+```
+
+### Analyze a YouTube video
+
+```bash
+transfer-learning analyze "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+```
+
+### Analyze with custom frame interval
+
+```bash
+transfer-learning analyze path/to/video.mp4 --frame-interval 10
+```
+
+### Analyze with specific transcription model
+
+```bash
+transfer-learning analyze path/to/video.mp4 --model medium
+```
+
+## Output
+
+The command creates a comprehensive directory structure with analysis results:
+
+```
+output_dir/
+├── video_name/
+│   ├── frames/
+│   │   ├── frame_0001.jpg
+│   │   ├── frame_0002.jpg
+│   │   └── ...
+│   ├── metadata.json
+│   ├── analysis.json
+│   ├── transcript.txt
+│   ├── summary.json
+│   └── video.mp4 (if from YouTube)
+```
+
+- `frames/`: Directory containing extracted frames
+- `metadata.json`: Metadata about the video
+- `analysis.json`: Frame-by-frame analysis
+- `transcript.txt`: Audio transcript
+- `summary.json`: Overall summary of the video content
+- `video.mp4`: The downloaded video (if from YouTube)
+
+## Analysis Process
+
+The `analyze` command performs the following steps:
+
+1. If a YouTube URL is provided, downloads the video
+2. Extracts frames at the specified interval
+3. Analyzes each frame using AI vision models
+4. Extracts and transcribes the audio
+5. Combines the frame analysis and transcript to create a comprehensive summary
+6. Saves all results in the output directory
+
+## Summary Format
+
+The `summary.json` file contains a comprehensive summary of the video:
+
+```json
+{
+  "title": "Video Title",
+  "duration": 120.5,
+  "frame_count": 10,
+  "key_scenes": [
+    {
+      "timestamp": 0.0,
+      "description": "Introduction scene",
+      "objects": ["person", "desk", "computer"],
+      "actions": ["speaking", "gesturing"]
+    }
+  ],
+  "transcript_summary": "Brief summary of the transcript content",
+  "topics": ["topic1", "topic2"],
+  "people": ["person1", "person2"],
+  "objects": ["object1", "object2"],
+  "actions": ["action1", "action2"],
+  "sentiment": "positive",
+  "technical_quality": {
+    "video_quality": "high",
+    "audio_quality": "medium",
+    "lighting": "good"
+  }
+}
+```
+
+## Use Cases
+
+The `analyze` command is useful for:
+
+- Content creators analyzing their videos
+- Researchers studying video content
+- Educators creating accessible materials
+- Marketers understanding video engagement
+- Archivists cataloging video collections
+
+## Related Commands
+
+- [Process Video](/cli/process-video)
+- [Process YouTube](/cli/process-youtube)
+- [Transcribe](/cli/transcribe)
+- [Generate Guide](/cli/generate-guide) 

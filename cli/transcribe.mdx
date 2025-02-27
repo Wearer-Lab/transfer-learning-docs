@@ -1,0 +1,130 @@
+---
+title: Transcribe
+description: "Extract and transcribe audio from a video"
+---
+
+# Transcribe Command
+
+The `transcribe` command extracts audio from a video file or YouTube video and transcribes it using Whisper. This is useful for generating text content from videos or for accessibility purposes.
+
+## Usage
+
+```bash
+transfer-learning transcribe PATH [OPTIONS]
+```
+
+## Arguments
+
+| Argument | Description |
+| -------- | ----------- |
+| `PATH` | Path to video file or YouTube URL |
+
+## Options
+
+| Option | Description | Default |
+| ------ | ----------- | ------- |
+| `--output-dir TEXT` | Output directory for transcripts | `transcripts/` |
+| `--model TEXT` | Whisper model to use (tiny, base, small, medium, large) | base |
+| `--device TEXT` | Device to use for transcription (cpu, cuda) | cpu |
+| `--language TEXT` | Language code (auto for auto-detection) | auto |
+| `--format TEXT` | Output format (txt, srt, vtt, json) | txt |
+| `--help` | Show help message and exit | - |
+
+## Examples
+
+### Transcribe a local video file
+
+```bash
+transfer-learning transcribe path/to/video.mp4
+```
+
+### Transcribe a YouTube video
+
+```bash
+transfer-learning transcribe "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+```
+
+### Transcribe with a specific model
+
+```bash
+transfer-learning transcribe path/to/video.mp4 --model medium
+```
+
+### Transcribe with GPU acceleration
+
+```bash
+transfer-learning transcribe path/to/video.mp4 --device cuda
+```
+
+### Transcribe to a specific format
+
+```bash
+transfer-learning transcribe path/to/video.mp4 --format srt
+```
+
+## Output
+
+The command generates a transcript file in the specified format in the output directory:
+
+```
+output_dir/
+└── video_name_transcript.txt
+```
+
+## Whisper Models
+
+The command supports the following Whisper models:
+
+| Model | Size | Memory Required | Relative Speed |
+| ----- | ---- | --------------- | -------------- |
+| tiny | 39M | ~1GB | ~32x |
+| base | 74M | ~1GB | ~16x |
+| small | 244M | ~2GB | ~6x |
+| medium | 769M | ~5GB | ~2x |
+| large | 1550M | ~10GB | 1x |
+
+The larger models provide better accuracy but require more memory and processing time.
+
+## Output Formats
+
+The command supports the following output formats:
+
+- `txt`: Plain text transcript
+- `srt`: SubRip subtitle format
+- `vtt`: WebVTT subtitle format
+- `json`: JSON format with timestamps and confidence scores
+
+## JSON Format Example
+
+When using the `json` format, the output will look like this:
+
+```json
+{
+  "segments": [
+    {
+      "id": 0,
+      "start": 0.0,
+      "end": 5.0,
+      "text": "Hello, welcome to this video.",
+      "confidence": 0.95
+    },
+    {
+      "id": 1,
+      "start": 5.0,
+      "end": 10.0,
+      "text": "Today we're going to talk about...",
+      "confidence": 0.92
+    }
+  ],
+  "language": "en",
+  "duration": 120.5,
+  "word_count": 150,
+  "processing_time": 45.2
+}
+```
+
+## Related Commands
+
+- [Process Video](/cli/process-video)
+- [Process YouTube](/cli/process-youtube)
+- [Analyze](/cli/analyze) 

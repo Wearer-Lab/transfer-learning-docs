@@ -1,0 +1,119 @@
+---
+title: CLI Overview
+description: "Overview of the Transfer Learning CLI commands and their usage"
+---
+
+# CLI Commands Overview
+
+Transfer Learning provides a powerful command-line interface for processing videos and generating step-by-step guides. The CLI is built using Typer and Rich libraries, providing a beautiful and intuitive interface.
+
+## Available Commands
+
+| Command | Description |
+| ------- | ----------- |
+| `process-video` | Process a local video file, extracting frames and analyzing content |
+| `generate-guide` | Generate a step-by-step guide from processed video data |
+| `process-youtube` | Download and process a YouTube video |
+| `youtube-guide` | Download a YouTube video and generate a guide in one command |
+| `transcribe` | Extract and transcribe audio from a video |
+| `analyze` | Perform detailed analysis of video content |
+| `download` | Download a video from YouTube or other supported platforms |
+| `cleanup` | Clean up temporary files and directories |
+| `stop` | Stop running processes and clean up resources |
+| `config` | View and modify configuration settings |
+
+## Command Structure
+
+All commands follow a consistent structure:
+
+```bash
+transfer-learning [COMMAND] [ARGUMENTS] [OPTIONS]
+```
+
+For example:
+
+```bash
+transfer-learning process-video path/to/video.mp4 --output-dir output --batch-size 10
+```
+
+## Global Options
+
+These options are available for most commands:
+
+| Option | Description | Default |
+| ------ | ----------- | ------- |
+| `--output-dir` | Directory to store outputs | Varies by command |
+| `--batch-size` | Number of frames to process in each batch | From config |
+| `--max-concurrent` | Maximum number of concurrent batches | From config |
+| `--help` | Show help message and exit | - |
+
+## Getting Help
+
+To get help for any command, use the `--help` option:
+
+```bash
+transfer-learning process-video --help
+```
+
+## Command Details
+
+For detailed information about each command, including all available options and examples, click on the command links below:
+
+<CardGroup cols={2}>
+  <Card
+    title="Process Video"
+    icon="film"
+    href="/cli/process-video"
+  >
+    Extract frames from local video files
+  </Card>
+  <Card
+    title="Generate Guide"
+    icon="book"
+    href="/cli/generate-guide"
+  >
+    Create step-by-step guides from processed data
+  </Card>
+  <Card
+    title="Process YouTube"
+    icon="youtube"
+    href="/cli/process-youtube"
+  >
+    Download and process YouTube videos
+  </Card>
+  <Card
+    title="YouTube Guide"
+    icon="video"
+    href="/cli/youtube-guide"
+  >
+    Complete YouTube processing pipeline
+  </Card>
+  <Card
+    title="Transcribe"
+    icon="microphone"
+    href="/cli/transcribe"
+  >
+    Extract and transcribe audio
+  </Card>
+  <Card
+    title="Analyze"
+    icon="magnifying-glass"
+    href="/cli/analyze"
+  >
+    Analyze video content
+  </Card>
+  <Card
+    title="Download"
+    icon="download"
+    href="/cli/download"
+  >
+    Download videos from various sources
+  </Card>
+  <Card
+    title="Utilities"
+    icon="wrench"
+    href="/cli/utilities"
+  >
+    Utility commands (cleanup, stop, config)
+  </Card>
+</CardGroup> 

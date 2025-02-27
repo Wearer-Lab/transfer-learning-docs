@@ -1,0 +1,178 @@
+---
+title: Utility Commands
+description: "Utility commands for managing the Transfer Learning CLI"
+---
+
+# Utility Commands
+
+Transfer Learning provides several utility commands to help manage the application, clean up resources, and configure settings.
+
+## Cleanup Command
+
+The `cleanup` command removes temporary files and directories that are older than a specified age.
+
+### Usage
+
+```bash
+transfer-learning cleanup [OPTIONS]
+```
+
+### Options
+
+| Option | Description | Default |
+| ------ | ----------- | ------- |
+| `--max-age-hours INTEGER` | Maximum age in hours for files to keep | 24 |
+| `--force` | Force cleanup without confirmation | False |
+| `--help` | Show help message and exit | - |
+
+### Examples
+
+```bash
+# Clean up files older than 24 hours
+transfer-learning cleanup
+
+# Clean up files older than 48 hours
+transfer-learning cleanup --max-age-hours 48
+
+# Force cleanup without confirmation
+transfer-learning cleanup --force
+```
+
+## Stop Command
+
+The `stop` command stops running processes and cleans up resources.
+
+### Usage
+
+```bash
+transfer-learning stop [OPTIONS]
+```
+
+### Options
+
+| Option | Description | Default |
+| ------ | ----------- | ------- |
+| `--force` | Force stop without confirmation | False |
+| `--clean-temp` | Clean temporary files | True |
+| `--clean-cache` | Clean cache files | True |
+| `--process-pattern TEXT` | Pattern to match process names | transfer-learning |
+| `--help` | Show help message and exit | - |
+
+### Examples
+
+```bash
+# Stop running processes
+transfer-learning stop
+
+# Force stop without confirmation
+transfer-learning stop --force
+
+# Stop without cleaning cache
+transfer-learning stop --clean-cache False
+```
+
+## Config Command
+
+The `config` command allows you to view and modify configuration settings.
+
+### Usage
+
+```bash
+transfer-learning config [OPTIONS]
+```
+
+### Options
+
+| Option | Description | Default |
+| ------ | ----------- | ------- |
+| `--show` | Show current configuration | False |
+| `--reset` | Reset configuration to defaults | False |
+| `--help` | Show help message and exit | - |
+
+### Examples
+
+```bash
+# Show current configuration
+transfer-learning config --show
+
+# Reset configuration to defaults
+transfer-learning config --reset
+```
+
+### Interactive Configuration
+
+When run without options, the `config` command enters an interactive mode that allows you to configure various settings:
+
+```bash
+transfer-learning config
+```
+
+This will display a menu of configuration options:
+
+1. API Keys
+2. Processing Settings
+3. Output Directories
+4. Model Settings
+5. Advanced Settings
+
+## Configuration Settings
+
+The following settings can be configured:
+
+### API Keys
+
+- OpenAI API Key
+- Other service API keys
+
+### Processing Settings
+
+- Batch size
+- Maximum concurrent batches
+- Frame interval
+- Default quality
+
+### Output Directories
+
+- Data directory
+- Guides directory
+- Transcripts directory
+- Videos directory
+- Analysis directory
+
+### Model Settings
+
+- Default OpenAI model
+- Default Whisper model
+- Temperature
+
+### Advanced Settings
+
+- Cache settings
+- Logging level
+- Metrics collection
+
+## Configuration File
+
+The configuration is stored in a `.env` file in the application directory. You can also manually edit this file if needed.
+
+Example `.env` file:
+
+```
+OPENAI_API_KEY=your-api-key-here
+BATCH_SIZE=10
+MAX_CONCURRENT_BATCHES=4
+FRAME_INTERVAL=30
+DEFAULT_MODEL=gpt-4-vision-preview
+DEFAULT_WHISPER_MODEL=base
+DATA_DIR=data/
+GUIDES_DIR=guides/
+TRANSCRIPTS_DIR=transcripts/
+VIDEOS_DIR=videos/
+ANALYSIS_DIR=analysis/
+```
+
+## Related Commands
+
+- [Process Video](/cli/process-video)
+- [Generate Guide](/cli/generate-guide)
+- [Process YouTube](/cli/process-youtube) 

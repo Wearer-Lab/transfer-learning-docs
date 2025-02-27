@@ -1,0 +1,111 @@
+---
+title: Process Video
+description: "Process a local video file, extracting frames and analyzing content"
+---
+
+# Process Video Command
+
+The `process-video` command extracts frames from a local video file at specified intervals and analyzes their content. This is the first step in the video processing pipeline.
+
+## Usage
+
+```bash
+transfer-learning process-video PATH [OPTIONS]
+```
+
+## Arguments
+
+| Argument | Description |
+| -------- | ----------- |
+| `PATH` | Path to the video file or directory containing video files |
+
+## Options
+
+| Option | Description | Default |
+| ------ | ----------- | ------- |
+| `--output-dir TEXT` | Output directory for results | `data/` |
+| `--batch-size INTEGER` | Number of frames to process in each batch | From config |
+| `--max-concurrent INTEGER` | Maximum number of concurrent batches | From config |
+| `--frame-interval INTEGER` | Interval between frame extractions in seconds | 30 |
+| `--skip-existing` | Skip processing if output already exists | False |
+| `--force` | Force processing even if output already exists | False |
+| `--help` | Show help message and exit | - |
+
+## Examples
+
+### Process a single video file
+
+```bash
+transfer-learning process-video path/to/video.mp4
+```
+
+### Process a video with custom frame interval
+
+```bash
+transfer-learning process-video path/to/video.mp4 --frame-interval 10
+```
+
+### Process a video with custom output directory
+
+```bash
+transfer-learning process-video path/to/video.mp4 --output-dir my-output
+```
+
+### Process all videos in a directory
+
+```bash
+transfer-learning process-video path/to/videos/
+```
+
+## Output
+
+The command creates a directory structure in the output directory with the following components:
+
+```
+output_dir/
+├── video_name/
+│   ├── frames/
+│   │   ├── frame_0001.jpg
+│   │   ├── frame_0002.jpg
+│   │   └── ...
+│   ├── metadata.json
+│   └── analysis.json
+```
+
+- `frames/`: Directory containing extracted frames as JPEG images
+- `metadata.json`: Metadata about the video and extraction process
+- `analysis.json`: Analysis of the extracted frames
+
+## Metadata Format
+
+The `metadata.json` file contains information about the video and the extraction process:
+
+```json
+{
+  "video_path": "path/to/video.mp4",
+  "duration": 120.5,
+  "frame_count": 10,
+  "frame_interval": 30,
+  "resolution": {
+    "width": 1920,
+    "height": 1080
+  },
+  "fps": 30,
+  "extraction_time": "2023-02-25T12:34:56",
+  "processing_time": 45.2
+}
+```
+
+## Next Steps
+
+After processing a video, you can:
+
+1. [Generate a guide](/cli/generate-guide) from the processed data
+2. [Transcribe the audio](/cli/transcribe) from the video
+3. [Analyze the content](/cli/analyze) in more detail
+
+## Related Commands
+
+- [Generate Guide](/cli/generate-guide)
+- [Process YouTube](/cli/process-youtube)
+- [YouTube Guide](/cli/youtube-guide) 

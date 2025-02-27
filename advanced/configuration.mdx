@@ -1,0 +1,176 @@
+---
+title: Configuration
+description: "Advanced configuration options for Transfer Learning"
+---
+
+# Advanced Configuration
+
+Transfer Learning provides a flexible configuration system that allows you to customize various aspects of the application. This page covers advanced configuration options and techniques.
+
+## Configuration Files
+
+Transfer Learning uses the following configuration files:
+
+1. `.env`: Main configuration file for environment variables
+2. `.env.local`: Local overrides (not committed to version control)
+3. `pyproject.toml`: Project configuration and dependencies
+
+## Environment Variables
+
+The main configuration is managed through environment variables, which can be set in the `.env` file or directly in your shell environment.
+
+### Core Settings
+
+| Variable | Description | Default |
+| -------- | ----------- | ------- |
+| `OPENAI_API_KEY` | OpenAI API key for vision and guide generation | - |
+| `BATCH_SIZE` | Number of frames to process in each batch | 10 |
+| `MAX_CONCURRENT_BATCHES` | Maximum number of concurrent batches | 4 |
+| `FRAME_INTERVAL` | Default interval between frame extractions in seconds | 30 |
+| `DEFAULT_MODEL` | Default OpenAI model for guide generation | gpt-4-vision-preview |
+| `DEFAULT_WHISPER_MODEL` | Default Whisper model for transcription | base |
+
+### Directory Settings
+
+| Variable | Description | Default |
+| -------- | ----------- | ------- |
+| `DATA_DIR` | Directory for processed video data | data/ |
+| `GUIDES_DIR` | Directory for generated guides | guides/ |
+| `TRANSCRIPTS_DIR` | Directory for transcripts | transcripts/ |
+| `VIDEOS_DIR` | Directory for downloaded videos | videos/ |
+| `ANALYSIS_DIR` | Directory for analysis results | analysis/ |
+| `TEMP_DIR` | Directory for temporary files | .cache/temp/ |
+| `CACHE_DIR` | Directory for cached results | .cache/ |
+| `LOGS_DIR` | Directory for log files | logs/ |
+
+### Advanced Settings
+
+| Variable | Description | Default |
+| -------- | ----------- | ------- |
+| `LOG_LEVEL` | Logging level (DEBUG, INFO, WARNING, ERROR) | INFO |
+| `ENABLE_METRICS` | Enable metrics collection | True |
+| `METRICS_DIR` | Directory for metrics data | metrics/ |
+| `CACHE_TTL` | Cache time-to-live in seconds | 86400 (1 day) |
+| `MAX_RETRIES` | Maximum number of retries for API calls | 3 |
+| `TIMEOUT` | Timeout for API calls in seconds | 60 |
+| `USER_AGENT` | User agent for HTTP requests | Transfer Learning/1.0 |
+
+## Configuration Methods
+
+There are several ways to configure Transfer Learning:
+
+### 1. Environment Variables
+
+Set environment variables directly in your shell:
+
+```bash
+export OPENAI_API_KEY=your-api-key-here
+export BATCH_SIZE=20
+```
+
+### 2. .env File
+
+Create or edit the `.env` file in the project root:
+
+```
+OPENAI_API_KEY=your-api-key-here
+BATCH_SIZE=20
+MAX_CONCURRENT_BATCHES=8
+```
+
+### 3. Config Command
+
+Use the `config` command to interactively configure the application:
+
+```bash
+transfer-learning config
+```
+
+### 4. Command-Line Options
+
+Override configuration for a specific command:
+
+```bash
+transfer-learning process-video video.mp4 --batch-size 20 --max-concurrent 8
+```
+
+## Configuration Precedence
+
+Configuration values are loaded in the following order (later sources override earlier ones):
+
+1. Default values in code
+2. `.env` file
+3. `.env.local` file
+4. Environment variables
+5. Command-line options
+
+## Advanced Configuration Techniques
+
+### Using Different Configurations
+
+You can maintain multiple configuration files for different use cases:
+
+```bash
+# Use a specific configuration file
+env $(cat .env.high-quality) transfer-learning process-video video.mp4
+```
+
+### Configuration Profiles
+
+Create configuration profiles for different scenarios:
+
+```
+# .env.high-quality
+BATCH_SIZE=5
+MAX_CONCURRENT_BATCHES=2
+FRAME_INTERVAL=10
+DEFAULT_MODEL=gpt-4-vision-preview
+
+# .env.fast
+BATCH_SIZE=20
+MAX_CONCURRENT_BATCHES=8
+FRAME_INTERVAL=60
+DEFAULT_MODEL=gpt-3.5-turbo
+```
+
+### Programmatic Configuration
+
+When using Transfer Learning as a library, you can configure it programmatically:
+
+```python
+from transfer_learning.config import settings
+
+# Override settings
+settings.batch_size = 20
+settings.max_concurrent_batches = 8
+
+# Use the library
+from transfer_learning.core.video_processor import process_videos_async
+await process_videos_async("video.mp4")
+```
+
+## Configuration Validation
+
+Transfer Learning validates configuration values to ensure they are within acceptable ranges. If a configuration value is invalid, a warning will be logged, and a default value will be used.
+
+You can manually validate the configuration using the `config` command:
+
+```bash
+transfer-learning config --show
+```
+
+## Resetting Configuration
+
+To reset the configuration to default values:
+
+```bash
+transfer-learning config --reset
+```
+
+This will create a new `.env` file with default values, backing up the existing file if necessary.
+
+## Related Documentation
+
+- [CLI Overview](/cli/overview)
+- [Monitoring](/advanced/monitoring)
+- [Optimization](/advanced/optimization) 

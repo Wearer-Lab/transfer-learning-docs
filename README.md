@@ -1,32 +1,89 @@
-# Mintlify Starter Kit
+# Transfer Learning Documentation
 
-Click on `Use this template` to copy the Mintlify starter kit. The starter kit contains examples including
+This directory contains the documentation for the Transfer Learning video processing pipeline, built with [Mintlify](https://mintlify.com/).
 
-- Guide pages
-- Navigation
-- Customizations
-- API Reference pages
-- Use of popular components
+## Documentation Structure
 
-### Development
+The documentation is organized into the following sections:
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview the documentation changes locally. To install, use the following command
+### Getting Started
+- [Introduction](/introduction.mdx) - Overview of Transfer Learning
+- [Quickstart](/quickstart.mdx) - Quick installation and usage guide
+- [Development](/development.mdx) - Guide for developers
 
-```
+### CLI Commands
+- [CLI Overview](/cli/overview.mdx) - Overview of all CLI commands
+- [Process Video](/cli/process-video.mdx) - Process local video files
+- [Generate Guide](/cli/generate-guide.mdx) - Generate guides from processed data
+- [Process YouTube](/cli/process-youtube.mdx) - Process YouTube videos
+- [YouTube Guide](/cli/youtube-guide.mdx) - Complete YouTube processing pipeline
+- [Transcribe](/cli/transcribe.mdx) - Transcribe audio from videos
+- [Analyze](/cli/analyze.mdx) - Analyze video content
+- [Download](/cli/download.mdx) - Download videos from various sources
+- [Utilities](/cli/utilities.mdx) - Utility commands (cleanup, stop, config)
+
+### Advanced Usage
+- [Configuration](/advanced/configuration.mdx) - Advanced configuration options
+- [Monitoring](/advanced/monitoring.mdx) - Monitoring and metrics collection
+- [Optimization](/advanced/optimization.mdx) - Performance optimization techniques
+
+### API Reference
+- [Introduction](/api-reference/introduction.mdx) - Introduction to the API
+- Core Components documentation
+- Guide Generation documentation
+- Utilities documentation
+
+## Local Development
+
+To run the documentation locally:
+
+1. Install Mintlify CLI:
+```bash
 npm i -g mintlify
 ```
 
-Run the following command at the root of your documentation (where docs.json is)
-
-```
+2. Run the development server:
+```bash
 mintlify dev
 ```
 
-### Publishing Changes
+3. Visit http://localhost:3000 to preview the documentation.
 
-Install our Github App to auto propagate changes from your repo to your deployment. Changes will be deployed to production automatically after pushing to the default branch. Find the link to install on your dashboard. 
+## Building and Deploying
 
-#### Troubleshooting
+The documentation is automatically built and deployed when changes are pushed to the main branch.
 
-- Mintlify dev isn't running - Run `mintlify install` it'll re-install dependencies.
-- Page loads as a 404 - Make sure you are running in a folder with `docs.json`
+## Contributing
+
+To contribute to the documentation:
+
+1. Create a new branch for your changes
+2. Make your changes to the relevant MDX files
+3. Test your changes locally using `mintlify dev`
+4. Submit a pull request
+
+## Documentation Checklist
+
+- [x] Introduction
+- [x] CLI Commands Overview
+- [x] Process Video Command
+- [x] Generate Guide Command
+- [x] Process YouTube Command
+- [x] YouTube Guide Command
+- [x] Transcribe Command
+- [x] Analyze Command
+- [x] Download Command
+- [x] Utility Commands
+- [x] Configuration
+- [x] Monitoring
+- [x] Optimization
+- [x] API Reference Introduction
+- [ ] Video Processor API
+- [ ] Audio Transcriber API
+- [ ] Content Analyzer API
+- [ ] Frame Extractor API
+- [ ] Guide Generator API
+- [ ] Downloader API
+- [ ] Validation API
+- [ ] Path Utilities API
+- [ ] Monitoring API

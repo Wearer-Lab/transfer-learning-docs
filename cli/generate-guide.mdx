@@ -1,0 +1,125 @@
+---
+title: Generate Guide
+description: "Generate a step-by-step guide from processed video data"
+---
+
+# Generate Guide Command
+
+The `generate-guide` command creates a detailed step-by-step guide from previously processed video data. It uses AI to analyze the extracted frames and generate a structured guide.
+
+## Usage
+
+```bash
+transfer-learning generate-guide PATH [OPTIONS]
+```
+
+## Arguments
+
+| Argument | Description |
+| -------- | ----------- |
+| `PATH` | Path to processed video data directory |
+
+## Options
+
+| Option | Description | Default |
+| ------ | ----------- | ------- |
+| `--output-dir TEXT` | Output directory for guides | `guides/` |
+| `--model TEXT` | Model to use for guide generation | From config |
+| `--temperature FLOAT` | Temperature for generation | 0.2 |
+| `--user-directive TEXT` | User directive to customize guide generation | None |
+| `--skip-cache` | Skip cache and force regeneration | False |
+| `--format TEXT` | Output format (json, markdown, html) | json |
+| `--help` | Show help message and exit | - |
+
+## Examples
+
+### Generate a guide from processed video data
+
+```bash
+transfer-learning generate-guide data/my_video
+```
+
+### Generate a guide with a custom directive
+
+```bash
+transfer-learning generate-guide data/my_video --user-directive "Focus on technical details and tools used"
+```
+
+### Generate a guide in markdown format
+
+```bash
+transfer-learning generate-guide data/my_video --format markdown
+```
+
+### Generate a guide with a specific model
+
+```bash
+transfer-learning generate-guide data/my_video --model gpt-4-vision-preview
+```
+
+## Output
+
+The command generates a guide file in the specified format (default: JSON) in the output directory:
+
+```
+output_dir/
+└── video_name_guide.json
+```
+
+## Guide Format
+
+The generated guide has the following structure:
+
+```json
+{
+  "title": "Process Title",
+  "description": "Overall process description",
+  "steps": [
+    {
+      "step_number": 1,
+      "title": "Step Title",
+      "description": "Step description",
+      "tools_used": ["tool1", "tool2"],
+      "duration": 10.5,
+      "key_points": ["point1", "point2"],
+      "timestamp": 0.0
+    }
+  ],
+  "principles": [
+    {
+      "name": "Principle Name",
+      "description": "Principle description",
+      "importance": "Why this principle matters",
+      "examples": ["example1", "example2"]
+    }
+  ],
+  "total_duration": 120.5,
+  "source_type": "local",
+  "source_path": "path/to/video.mp4"
+}
+```
+
+## Customizing Guide Generation
+
+You can customize the guide generation process using the `--user-directive` option. This allows you to specify what aspects of the video to focus on or what style to use for the guide.
+
+Examples of user directives:
+
+- "Focus on technical details and tools used"
+- "Emphasize beginner-friendly explanations"
+- "Highlight safety considerations"
+- "Include more detailed steps for complex parts"
+
+## Next Steps
+
+After generating a guide, you can:
+
+1. Use the guide in your application or documentation
+2. Convert the guide to different formats using the `--format` option
+3. Customize the guide further with manual edits
+
+## Related Commands
+
+- [Process Video](/cli/process-video)
+- [YouTube Guide](/cli/youtube-guide)
+- [Analyze](/cli/analyze) 

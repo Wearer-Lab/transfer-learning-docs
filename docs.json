@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Transfer Learning Video Processing",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
@@ -22,14 +22,25 @@
             ]
           },
           {
-            "group": "Essentials",
+            "group": "CLI Commands",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/settings",
-              "essentials/navigation",
-              "essentials/reusable-snippets"
+              "cli/overview",
+              "cli/process-video",
+              "cli/generate-guide",
+              "cli/process-youtube",
+              "cli/youtube-guide",
+              "cli/transcribe",
+              "cli/analyze",
+              "cli/download",
+              "cli/utilities"
+            ]
+          },
+          {
+            "group": "Advanced Usage",
+            "pages": [
+              "advanced/configuration",
+              "advanced/monitoring",
+              "advanced/optimization"
             ]
           }
         ]
@@ -38,17 +49,28 @@
         "tab": "API Reference",
         "groups": [
           {
-            "group": "API Documentation",
+            "group": "Core Components",
             "pages": [
-              "api-reference/introduction"
+              "api-reference/introduction",
+              "api-reference/video-processor",
+              "api-reference/audio-transcriber",
+              "api-reference/content-analyzer",
+              "api-reference/frame-extractor"
             ]
           },
           {
-            "group": "Endpoint Examples",
+            "group": "Guide Generation",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete"
+              "api-reference/guide-generator"
+            ]
+          },
+          {
+            "group": "Utilities",
+            "pages": [
+              "api-reference/downloader",
+              "api-reference/validation",
+              "api-reference/path-utils",
+              "api-reference/monitoring"
             ]
           }
         ]
@@ -57,19 +79,14 @@
     "global": {
       "anchors": [
         {
+          "anchor": "GitHub",
+          "href": "https://github.com/yourusername/transfer-learning",
+          "icon": "github"
+        },
+        {
           "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
+          "href": "/introduction",
           "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
         }
       ]
     }
@@ -82,20 +99,18 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:support@example.com"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Get Started",
+      "href": "/quickstart"
     }
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "github": "https://github.com/yourusername/transfer-learning"
     }
   }
 }

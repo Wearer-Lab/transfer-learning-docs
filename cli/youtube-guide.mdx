@@ -1,0 +1,140 @@
+---
+title: YouTube Guide
+description: "Download a YouTube video and generate a guide in one command"
+---
+
+# YouTube Guide Command
+
+The `youtube-guide` command combines the functionality of `process-youtube` and `generate-guide` into a single command. It downloads a YouTube video, processes it, and generates a step-by-step guide, all in one operation.
+
+## Usage
+
+```bash
+transfer-learning youtube-guide URL [OPTIONS]
+```
+
+## Arguments
+
+| Argument | Description |
+| -------- | ----------- |
+| `URL` | YouTube video URL |
+
+## Options
+
+| Option | Description | Default |
+| ------ | ----------- | ------- |
+| `--output-dir TEXT` | Output directory for guides | `guides/` |
+| `--model TEXT` | Model to use for guide generation | From config |
+| `--temperature FLOAT` | Temperature for generation | 0.2 |
+| `--batch-size INTEGER` | Number of frames to process in each batch | From config |
+| `--max-concurrent INTEGER` | Maximum number of concurrent batches | From config |
+| `--frame-interval INTEGER` | Interval between frame extractions in seconds | 30 |
+| `--user-directive TEXT` | User directive to customize guide generation | None |
+| `--skip-cache` | Skip cache and force regeneration | False |
+| `--quality TEXT` | Video quality to download (best, 1080p, 720p, etc.) | best |
+| `--format TEXT` | Output format (json, markdown, html) | json |
+| `--help` | Show help message and exit | - |
+
+## Examples
+
+### Generate a guide from a YouTube video
+
+```bash
+transfer-learning youtube-guide "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+```
+
+### Generate a guide with custom directive
+
+```bash
+transfer-learning youtube-guide "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --user-directive "Focus on technical details"
+```
+
+### Generate a guide with specific model and format
+
+```bash
+transfer-learning youtube-guide "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --model gpt-4-vision-preview --format markdown
+```
+
+### Generate a guide with custom frame interval
+
+```bash
+transfer-learning youtube-guide "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --frame-interval 10
+```
+
+## Output
+
+The command creates a complete directory structure with both the processed video data and the generated guide:
+
+```
+output_dir/
+├── video_title/
+│   ├── frames/
+│   │   ├── frame_0001.jpg
+│   │   ├── frame_0002.jpg
+│   │   └── ...
+│   ├── metadata.json
+│   ├── analysis.json
+│   ├── video.mp4
+│   └── guide.json
+```
+
+## Guide Format
+
+The generated guide has the following structure:
+
+```json
+{
+  "title": "Process Title",
+  "description": "Overall process description",
+  "steps": [
+    {
+      "step_number": 1,
+      "title": "Step Title",
+      "description": "Step description",
+      "tools_used": ["tool1", "tool2"],
+      "duration": 10.5,
+      "key_points": ["point1", "point2"],
+      "timestamp": 0.0
+    }
+  ],
+  "principles": [
+    {
+      "name": "Principle Name",
+      "description": "Principle description",
+      "importance": "Why this principle matters",
+      "examples": ["example1", "example2"]
+    }
+  ],
+  "total_duration": 120.5,
+  "source_type": "youtube",
+  "source_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+}
+```
+
+## Processing Pipeline
+
+The `youtube-guide` command performs the following steps:
+
+1. Validates the YouTube URL
+2. Downloads the video using yt-dlp
+3. Extracts frames at the specified interval
+4. Analyzes the frames using AI
+5. Generates a step-by-step guide based on the analysis
+6. Saves the guide in the specified format
+
+## Customizing Guide Generation
+
+You can customize the guide generation process using the `--user-directive` option. This allows you to specify what aspects of the video to focus on or what style to use for the guide.
+
+Examples of user directives:
+
+- "Focus on technical details and tools used"
+- "Emphasize beginner-friendly explanations"
+- "Highlight safety considerations"
+- "Include more detailed steps for complex parts"
+
+## Related Commands
+
+- [Process YouTube](/cli/process-youtube)
+- [Generate Guide](/cli/generate-guide)
+- [Download](/cli/download) 

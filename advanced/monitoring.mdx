@@ -1,0 +1,228 @@
+---
+title: Monitoring
+description: "Monitoring and metrics collection for Transfer Learning"
+---
+
+# Monitoring and Metrics
+
+Transfer Learning includes comprehensive monitoring and metrics collection capabilities to help you track performance, usage, and potential issues. This page covers how to use and extend these monitoring features.
+
+## Logging System
+
+Transfer Learning uses a structured logging system that records information about operations, errors, and performance metrics.
+
+### Log Levels
+
+The following log levels are available:
+
+- `DEBUG`: Detailed debugging information
+- `INFO`: General information about operations
+- `WARNING`: Warning messages for potential issues
+- `ERROR`: Error messages for failures
+- `CRITICAL`: Critical errors that require immediate attention
+
+### Log Configuration
+
+You can configure logging through environment variables:
+
+```
+LOG_LEVEL=DEBUG
+LOGS_DIR=logs/
+```
+
+### Log File Structure
+
+Logs are stored in the `logs/` directory with the following structure:
+
+```
+logs/
+├── transfer-learning.log        # Main log file
+├── transfer-learning.error.log  # Error log file
+└── daily/
+    ├── transfer-learning-2023-02-25.log
+    └── transfer-learning-2023-02-26.log
+```
+
+### Viewing Logs
+
+You can view logs using standard tools:
+
+```bash
+# View the main log file
+cat logs/transfer-learning.log
+
+# View only error logs
+cat logs/transfer-learning.error.log
+
+# Follow logs in real-time
+tail -f logs/transfer-learning.log
+```
+
+## Metrics Collection
+
+Transfer Learning collects various metrics to help you understand performance and usage patterns.
+
+### Enabling Metrics
+
+Metrics collection is enabled by default. You can disable it by setting:
+
+```
+ENABLE_METRICS=False
+```
+
+### Metrics Storage
+
+Metrics are stored in the `metrics/` directory in JSON format:
+
+```
+metrics/
+├── performance/
+│   ├── 2023-02-25/
+│   │   ├── process_video_1.json
+│   │   └── generate_guide_1.json
+│   └── 2023-02-26/
+│       ├── process_video_1.json
+│       └── youtube_guide_1.json
+├── usage/
+│   ├── daily_usage.json
+│   └── command_usage.json
+└── errors/
+    └── error_counts.json
+```
+
+### Available Metrics
+
+Transfer Learning collects the following types of metrics:
+
+#### Performance Metrics
+
+- Processing time per video
+- Processing time per frame
+- API response times
+- Memory usage
+- CPU usage
+
+#### Usage Metrics
+
+- Command usage counts
+- Video processing counts
+- Guide generation counts
+- Total processed frames
+- Total processing time
+
+#### Error Metrics
+
+- Error counts by type
+- Error rates
+- Retry counts
+
+### Viewing Metrics
+
+You can view metrics using the built-in metrics viewer:
+
+```bash
+# View all metrics
+transfer-learning metrics
+
+# View performance metrics
+transfer-learning metrics --type performance
+
+# View usage metrics
+transfer-learning metrics --type usage
+
+# View metrics for a specific date
+transfer-learning metrics --date 2023-02-25
+```
+
+## Real-time Monitoring
+
+Transfer Learning provides real-time monitoring capabilities during command execution.
+
+### Progress Bars
+
+Commands display progress bars with the following information:
+
+- Overall progress
+- Current operation
+- Estimated time remaining
+- Processing rate (frames/second)
+- Resource usage
+
+### Status Updates
+
+Status updates are displayed during long-running operations:
+
+- Current batch being processed
+- Completed batches
+- Failed batches
+- Retry attempts
+
+## Monitoring API
+
+For advanced use cases, you can access the monitoring system programmatically:
+
+```python
+from transfer_learning.monitoring.metrics import MetricsTracker
+from transfer_learning.monitoring.logger import setup_logger
+
+# Set up logger
+logger = setup_logger("my_component")
+
+# Create a metrics tracker
+metrics = MetricsTracker("my_operation")
+
+# Start tracking an operation
+with metrics.track("process_frames"):
+    # Perform operation
+    process_frames()
+
+# Log metrics
+metrics.add_value("frames_processed", 100)
+metrics.add_timing("processing_time", 45.2)
+
+# Save metrics
+metrics.save()
+
+# Log messages
+logger.info("Operation completed successfully")
+logger.error("An error occurred", extra={"error_type": "api_error"})
+```
+
+## Alerting
+
+Transfer Learning can be configured to send alerts for critical issues:
+
+### Email Alerts
+
+Configure email alerts by setting:
+
+```
+ENABLE_EMAIL_ALERTS=True
+EMAIL_ALERT_RECIPIENT=your-email@example.com
+EMAIL_ALERT_LEVEL=ERROR
+```
+
+### Webhook Alerts
+
+Configure webhook alerts (e.g., for Slack or Discord) by setting:
+
+```
+ENABLE_WEBHOOK_ALERTS=True
+WEBHOOK_URL=https://hooks.slack.com/services/your-webhook-url
+WEBHOOK_ALERT_LEVEL=WARNING
+```
+
+## Performance Optimization
+
+Monitoring data can help identify performance bottlenecks:
+
+1. Check the `performance/` metrics to identify slow operations
+2. Look for patterns in error logs
+3. Adjust batch size and concurrency based on resource usage metrics
+4. Consider upgrading hardware for resource-intensive operations
+
+## Related Documentation
+
+- [Configuration](/advanced/configuration)
+- [Optimization](/advanced/optimization)
+- [CLI Utilities](/cli/utilities) 

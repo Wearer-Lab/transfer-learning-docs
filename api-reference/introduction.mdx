@@ -1,33 +1,129 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: API Reference Introduction
+description: "Introduction to the Transfer Learning API"
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+# Transfer Learning API Reference
 
-## Welcome
+Transfer Learning can be used not only as a CLI tool but also as a Python library in your own applications. This API reference documents the core components, classes, and functions available for developers.
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+## Installation
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+To use Transfer Learning as a library, install it using UV:
 
-## Authentication
-
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
-
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+```bash
+uv pip install transfer-learning
 ```
+
+Or using pip:
+
+```bash
+pip install transfer-learning
+```
+
+## Basic Usage
+
+Here's a simple example of using Transfer Learning in your Python code:
+
+```python
+import asyncio
+from transfer_learning.core.video_processor import process_videos_async
+from transfer_learning.guide.generator import GuideGenerator
+
+async def process_and_generate():
+    # Process a video
+    result = await process_videos_async("path/to/video.mp4")
+    
+    # Generate a guide
+    generator = GuideGenerator(result["output_dir"])
+    guide = await generator.generate()
+    
+    print(f"Guide generated: {guide}")
+
+# Run the async function
+asyncio.run(process_and_generate())
+```
+
+## Core Components
+
+Transfer Learning is organized into several core components:
+
+### Video Processing
+
+- [Video Processor](/api-reference/video-processor): Process videos and extract frames
+- [Frame Extractor](/api-reference/frame-extractor): Extract frames from videos
+- [Content Analyzer](/api-reference/content-analyzer): Analyze frame content using AI
+
+### Audio Processing
+
+- [Audio Transcriber](/api-reference/audio-transcriber): Transcribe audio from videos
+
+### Guide Generation
+
+- [Guide Generator](/api-reference/guide-generator): Generate step-by-step guides
+
+### Utilities
+
+- [Downloader](/api-reference/downloader): Download videos from various sources
+- [Validation](/api-reference/validation): Validate inputs and outputs
+- [Path Utilities](/api-reference/path-utils): Handle file and directory paths
+- [Monitoring](/api-reference/monitoring): Logging and metrics collection
+
+## Asynchronous API
+
+Most of the Transfer Learning API is asynchronous, using Python's `async`/`await` syntax. This allows for efficient processing of multiple videos or frames concurrently.
+
+```python
+import asyncio
+from transfer_learning.core.video_processor import process_videos_async
+
+async def process_multiple_videos():
+    # Process multiple videos concurrently
+    tasks = [
+        process_videos_async("video1.mp4"),
+        process_videos_async("video2.mp4"),
+        process_videos_async("video3.mp4")
+    ]
+    results = await asyncio.gather(*tasks)
+    return results
+
+# Run the async function
+results = asyncio.run(process_multiple_videos())
+```
+
+## Configuration
+
+You can configure the library using the settings module:
+
+```python
+from transfer_learning.config import settings
+
+# Override settings
+settings.batch_size = 20
+settings.max_concurrent_batches = 8
+settings.openai_api_key = "your-api-key"
+```
+
+## Error Handling
+
+The library uses custom exceptions for error handling:
+
+```python
+from transfer_learning.utils.exceptions import VideoProcessingError, GuideGenerationError
+
+try:
+    # Process a video
+    result = await process_videos_async("path/to/video.mp4")
+except VideoProcessingError as e:
+    print(f"Error processing video: {e}")
+```
+
+## Next Steps
+
+Explore the API reference for detailed documentation of each component:
+
+- [Video Processor](/api-reference/video-processor)
+- [Audio Transcriber](/api-reference/audio-transcriber)
+- [Guide Generator](/api-reference/guide-generator)
+
+For CLI usage, refer to the [CLI Commands](/cli/overview) documentation.

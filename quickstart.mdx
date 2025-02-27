@@ -1,124 +1,143 @@
 ---
-title: 'Quickstart'
+title: 'Quickstart Guide'
 description: 'Get started with Transfer Learning in minutes'
 ---
 
+# Quickstart Guide
+
+This guide will help you get started with Transfer Learning, a powerful CLI tool for processing videos and generating step-by-step guides using AI.
+
 ## Installation
 
-Get up and running with Transfer Learning quickly by following these steps.
-
-### Prerequisites
-
-Before installing Transfer Learning, make sure you have:
-
-- Python 3.9 or higher
-- An OpenAI API key (for GPT-4 Vision)
-- FFmpeg installed on your system (for video processing)
-
-<AccordionGroup>
-  <Accordion icon="key" title="Setting up your OpenAI API key">
-    1. Create an account on [OpenAI](https://platform.openai.com/) if you don't have one
-    2. Navigate to the API section and create a new API key
-    3. Copy your API key for use during installation
-  </Accordion>
-  <Accordion icon="film" title="Installing FFmpeg">
-    **On macOS (using Homebrew):**
-    ```bash
-    brew install ffmpeg
-    ```
-    
-    **On Ubuntu/Debian:**
-    ```bash
-    sudo apt update
-    sudo apt install ffmpeg
-    ```
-    
-    **On Windows:**
-    Download from [FFmpeg's official website](https://ffmpeg.org/download.html) or install using Chocolatey:
-    ```bash
-    choco install ffmpeg
-    ```
-  </Accordion>
-</AccordionGroup>
-
-### Installation Steps
-
 <Steps>
-  <Step title="Install Transfer Learning">
-    Install using UV (recommended):
-    
+  <Step title="Clone the Repository">
     ```bash
-    pip install uv
-    uv pip install transfer-learning
-    ```
-    
-    Or using pip:
-    
-    ```bash
-    pip install transfer-learning
+    git clone https://github.com/Wearer-Lab/Transfert-Learning.git
+    cd Transfert-Learning
     ```
   </Step>
-  <Step title="Set up your API key">
-    Create a `.env` file in your working directory:
+  <Step title="Set Up Virtual Environment">
+    ```bash
+    python -m venv .venv
+    source .venv/bin/activate  # On Windows, use `.venv\Scripts\activate`
+    ```
+  </Step>
+  <Step title="Install UV Package Manager">
+    ```bash
+    pip install uv
+    ```
+  </Step>
+  <Step title="Install Dependencies">
+    ```bash
+    uv pip install -e .
+    ```
+  </Step>
+  <Step title="Set Up API Keys">
+    Create a `.env` file in the project root directory:
     
     ```bash
     echo "OPENAI_API_KEY=your-api-key-here" > .env
     ```
     
-    Or set it as an environment variable:
-    
-    ```bash
-    export OPENAI_API_KEY=your-api-key-here
-    ```
-  </Step>
-  <Step title="Verify installation">
-    Run the following command to verify that Transfer Learning is installed correctly:
-    
-    ```bash
-    transfer-learning --version
-    ```
-    
-    You should see the version number displayed.
+    <Tip>You need an OpenAI API key with access to GPT-4 Vision models for full functionality.</Tip>
   </Step>
 </Steps>
 
-## Quick Examples
+## Basic Usage
 
-Here are some quick examples to get you started with Transfer Learning.
+<AccordionGroup>
+  <Accordion title="Process a Local Video">
+    Extract frames from a local video file:
+    
+    ```bash
+    transfer-learning process-video path/to/video.mp4
+    ```
+    
+    This will:
+    1. Extract frames from the video at regular intervals
+    2. Save the frames to the output directory
+    3. Generate metadata about the video
+    
+    <Note>The processed data will be saved in the `data/videos` directory by default.</Note>
+  </Accordion>
+  
+  <Accordion title="Generate a Guide">
+    Generate a step-by-step guide from processed video data:
+    
+    ```bash
+    transfer-learning generate-guide data/videos/video_name
+    ```
+    
+    This will:
+    1. Analyze the extracted frames using AI vision models
+    2. Generate a comprehensive step-by-step guide
+    3. Save the guide in JSON format
+    
+    <Note>The generated guide will be saved in the `data/guides` directory by default.</Note>
+  </Accordion>
+  
+  <Accordion title="Process a YouTube Video">
+    Download and process a YouTube video:
+    
+    ```bash
+    transfer-learning process-youtube "https://youtube.com/watch?v=VIDEO_ID"
+    ```
+    
+    This will:
+    1. Download the YouTube video
+    2. Extract frames at regular intervals
+    3. Save the frames and metadata
+    
+    <Note>The video will be downloaded to the `data/videos` directory by default.</Note>
+  </Accordion>
+  
+  <Accordion title="Complete YouTube Pipeline">
+    Download a YouTube video and generate a guide in one command:
+    
+    ```bash
+    transfer-learning youtube-guide "https://youtube.com/watch?v=VIDEO_ID"
+    ```
+    
+    This will:
+    1. Download the YouTube video
+    2. Process the video and extract frames
+    3. Analyze the frames and generate a guide
+    
+    <Note>This is a convenience command that combines `process-youtube` and `generate-guide`.</Note>
+  </Accordion>
+</AccordionGroup>
 
-### Process a Local Video
+## Configuration
 
-Extract frames from a local video file and analyze their content:
+Transfer Learning can be configured using environment variables or the `.env` file. Here are some key configuration options:
 
-```bash
-transfer-learning process-video path/to/video.mp4
-```
+<ResponseField name="OPENAI_API_KEY" type="string" required>
+  Your OpenAI API key for accessing GPT-4 Vision models.
+</ResponseField>
 
-### Generate a Guide from Processed Video
+<ResponseField name="FRAME_EXTRACTION_INTERVAL" type="integer" default="30">
+  Interval between frame extractions (in frames).
+</ResponseField>
 
-Generate a step-by-step guide from previously processed video data:
+<ResponseField name="MAX_FRAMES_PER_VIDEO" type="integer" default="100">
+  Maximum number of frames to extract per video.
+</ResponseField>
 
-```bash
-transfer-learning generate-guide data/video_name
-```
+<ResponseField name="BATCH_SIZE" type="integer" default="30">
+  Number of frames to process in each batch.
+</ResponseField>
 
-### Process a YouTube Video
+<ResponseField name="WHISPER_MODEL" type="string" default="base">
+  Whisper model to use for transcription (tiny, base, small, medium, large).
+</ResponseField>
 
-Download and process a YouTube video:
-
-```bash
-transfer-learning process-youtube "https://www.youtube.com/watch?v=VIDEO_ID"
-```
-
-### Complete YouTube Pipeline
-
-Download a YouTube video and generate a guide in one command:
-
-```bash
-transfer-learning youtube-guide "https://www.youtube.com/watch?v=VIDEO_ID"
-```
+<ResponseField name="ENABLE_MONITORING" type="boolean" default="true">
+  Enable or disable monitoring and metrics collection.
+</ResponseField>
 
 ## Next Steps
+
+Now that you've set up Transfer Learning and learned the basic commands, you can:
 
 <CardGroup>
   <Card
@@ -129,18 +148,11 @@ transfer-learning youtube-guide "https://www.youtube.com/watch?v=VIDEO_ID"
     Learn about all available commands and their options
   </Card>
   <Card
-    title="Configuration"
+    title="Advanced Configuration"
     icon="gear"
     href="/advanced/configuration"
   >
-    Customize Transfer Learning to your needs
-  </Card>
-  <Card
-    title="Development Guide"
-    icon="code"
-    href="/development"
-  >
-    Contribute to or extend Transfer Learning
+    Configure Transfer Learning for your specific needs
   </Card>
   <Card
     title="API Reference"
@@ -153,26 +165,45 @@ transfer-learning youtube-guide "https://www.youtube.com/watch?v=VIDEO_ID"
 
 ## Troubleshooting
 
-<AccordionGroup>
-  <Accordion icon="triangle-exclamation" title="OpenAI API key issues">
-    If you encounter errors related to the OpenAI API key:
-    
-    1. Verify that your API key is correct
-    2. Check that your API key has sufficient credits
-    3. Ensure the API key is properly set in your environment or `.env` file
-  </Accordion>
-  <Accordion icon="video" title="Video processing issues">
-    If you encounter issues with video processing:
-    
-    1. Verify that FFmpeg is installed and accessible in your PATH
-    2. Check that the video file is not corrupted
-    3. Try processing with a smaller frame interval: `--frame-interval 60`
-  </Accordion>
-  <Accordion icon="memory" title="Memory or performance issues">
-    If you encounter memory or performance issues:
-    
-    1. Reduce batch size: `--batch-size 5`
-    2. Reduce concurrent batches: `--max-concurrent 2`
-    3. Increase frame interval to extract fewer frames: `--frame-interval 60`
-  </Accordion>
-</AccordionGroup>
+<Accordion title="API Key Issues">
+  If you encounter errors related to the OpenAI API key:
+  
+  1. Ensure your API key is correctly set in the `.env` file
+  2. Verify that your API key has access to GPT-4 Vision models
+  3. Check your OpenAI account for any usage limits or restrictions
+  
+  You can verify your API key configuration with:
+  
+  ```bash
+  transfer-learning config --show
+  ```
+</Accordion>
+
+<Accordion title="Video Processing Errors">
+  If you encounter errors during video processing:
+  
+  1. Ensure the video file is in a supported format (MP4, AVI, MOV, MKV)
+  2. Check that the video file is not corrupted
+  3. Verify that you have sufficient disk space for processing
+  
+  You can try processing with a smaller batch size:
+  
+  ```bash
+  transfer-learning process-video path/to/video.mp4 --batch-size 10
+  ```
+</Accordion>
+
+<Accordion title="Memory Issues">
+  If you encounter memory issues during processing:
+  
+  1. Reduce the batch size with `--batch-size`
+  2. Reduce the maximum concurrent batches with `--max-concurrent`
+  3. Process shorter video segments
+  
+  For very large videos, you can also limit the maximum frames:
+  
+  ```bash
+  export MAX_FRAMES_PER_VIDEO=50
+  transfer-learning process-video path/to/large-video.mp4
+  ```
+</Accordion>

@@ -1,119 +1,263 @@
 ---
-title: CLI Overview
-description: "Overview of the Transfer Learning CLI commands and their usage"
+title: 'CLI Commands'
+description: 'Overview of Transfer Learning CLI commands and their usage'
 ---
 
-# CLI Commands Overview
+# CLI Commands
 
-Transfer Learning provides a powerful command-line interface for processing videos and generating step-by-step guides. The CLI is built using Typer and Rich libraries, providing a beautiful and intuitive interface.
-
-## Available Commands
-
-| Command | Description |
-| ------- | ----------- |
-| `process-video` | Process a local video file, extracting frames and analyzing content |
-| `generate-guide` | Generate a step-by-step guide from processed video data |
-| `process-youtube` | Download and process a YouTube video |
-| `youtube-guide` | Download a YouTube video and generate a guide in one command |
-| `transcribe` | Extract and transcribe audio from a video |
-| `analyze` | Perform detailed analysis of video content |
-| `download` | Download a video from YouTube or other supported platforms |
-| `cleanup` | Clean up temporary files and directories |
-| `stop` | Stop running processes and clean up resources |
-| `config` | View and modify configuration settings |
+Transfer Learning provides a powerful command-line interface for processing videos and generating step-by-step guides. This page provides an overview of all available commands and their options.
 
 ## Command Structure
 
-All commands follow a consistent structure:
+All Transfer Learning commands follow this general structure:
 
 ```bash
-transfer-learning [COMMAND] [ARGUMENTS] [OPTIONS]
+transfer-learning [command] [arguments] [options]
 ```
 
-For example:
+## Available Commands
+
+<CardGroup cols={2}>
+  <Card title="process-video" icon="film" color="#4f46e5" href="#process-video">
+    Process a local video file and extract content
+  </Card>
+  <Card title="generate-guide" icon="book" color="#0ea5e9" href="#generate-guide">
+    Generate a step-by-step guide from processed video data
+  </Card>
+  <Card title="process-youtube" icon="youtube" color="#ef4444" href="#process-youtube">
+    Process a YouTube video and extract content
+  </Card>
+  <Card title="youtube-guide" icon="video" color="#f97316" href="#youtube-guide">
+    Generate a guide directly from a YouTube video
+  </Card>
+  <Card title="transcribe" icon="microphone" color="#10b981" href="#transcribe">
+    Extract transcript from video
+  </Card>
+  <Card title="analyze" icon="magnifying-glass" color="#f59e0b" href="#analyze">
+    Analyze video content
+  </Card>
+  <Card title="download" icon="download" color="#8b5cf6" href="#download">
+    Download video from supported platforms
+  </Card>
+  <Card title="config" icon="gear" color="#64748b" href="#config">
+    Configure environment variables and settings
+  </Card>
+</CardGroup>
+
+## Command Details
+
+### process-video
+
+Process a local video file and extract content.
 
 ```bash
-transfer-learning process-video path/to/video.mp4 --output-dir output --batch-size 10
+transfer-learning process-video PATH [OPTIONS]
+```
+
+#### Arguments
+
+- `PATH`: Path to video file or directory
+
+#### Options
+
+- `--output-dir TEXT`: Output directory for results
+- `--batch-size INTEGER`: Number of frames to process in each batch
+- `--max-concurrent INTEGER`: Maximum number of concurrent batches
+
+#### Example
+
+```bash
+transfer-learning process-video tutorial.mp4 --output-dir data/processed --batch-size 30
+```
+
+### generate-guide
+
+Generate a step-by-step guide from processed video data.
+
+```bash
+transfer-learning generate-guide PATH [OPTIONS]
+```
+
+#### Arguments
+
+- `PATH`: Path to processed video data
+
+#### Options
+
+- `--output-dir TEXT`: Output directory for guides
+- `--model TEXT`: Model to use for guide generation
+- `--temperature FLOAT`: Temperature for generation
+- `--user-directive TEXT`: User directive to customize guide generation
+- `--skip-cache`: Skip cache and force regeneration
+
+#### Example
+
+```bash
+transfer-learning generate-guide data/processed/tutorial --output-dir guides --model gpt-4o
+```
+
+### process-youtube
+
+Process a YouTube video and extract content.
+
+```bash
+transfer-learning process-youtube URL [OPTIONS]
+```
+
+#### Arguments
+
+- `URL`: YouTube video URL
+
+#### Options
+
+- `--output-dir TEXT`: Output directory for results
+- `--batch-size INTEGER`: Number of frames to process in each batch
+- `--max-concurrent INTEGER`: Maximum number of concurrent batches
+
+#### Example
+
+```bash
+transfer-learning process-youtube "https://youtube.com/watch?v=VIDEO_ID" --output-dir data/youtube
+```
+
+### youtube-guide
+
+Generate a guide directly from a YouTube video.
+
+```bash
+transfer-learning youtube-guide URL [OPTIONS]
+```
+
+#### Arguments
+
+- `URL`: YouTube video URL
+
+#### Options
+
+- `--output-dir TEXT`: Output directory for guides
+- `--model TEXT`: Model to use for guide generation
+- `--temperature FLOAT`: Temperature for generation
+- `--batch-size INTEGER`: Number of frames to process in each batch
+- `--max-concurrent INTEGER`: Maximum number of concurrent batches
+- `--user-directive TEXT`: User directive to customize guide generation
+- `--skip-cache`: Skip cache and force regeneration
+
+#### Example
+
+```bash
+transfer-learning youtube-guide "https://youtube.com/watch?v=VIDEO_ID" --output-dir guides
+```
+
+### transcribe
+
+Extract transcript from video.
+
+```bash
+transfer-learning transcribe PATH [OPTIONS]
+```
+
+#### Arguments
+
+- `PATH`: Path to video file or YouTube URL
+
+#### Options
+
+- `--output-dir TEXT`: Output directory for transcripts
+- `--model TEXT`: Whisper model to use
+- `--device TEXT`: Device to use for transcription
+
+#### Example
+
+```bash
+transfer-learning transcribe tutorial.mp4 --output-dir transcripts --model base
+```
+
+### analyze
+
+Analyze video content.
+
+```bash
+transfer-learning analyze PATH [OPTIONS]
+```
+
+#### Arguments
+
+- `PATH`: Path to video file or YouTube URL
+
+#### Options
+
+- `--output-dir TEXT`: Output directory for analysis results
+- `--batch-size INTEGER`: Number of frames to process in each batch
+- `--max-concurrent INTEGER`: Maximum number of concurrent batches
+- `--model TEXT`: Whisper model to use for transcription
+- `--device TEXT`: Device to use for transcription
+
+#### Example
+
+```bash
+transfer-learning analyze tutorial.mp4 --output-dir analysis
+```
+
+### download
+
+Download video from supported platforms.
+
+```bash
+transfer-learning download URL [OPTIONS]
+```
+
+#### Arguments
+
+- `URL`: URL to download video from
+
+#### Options
+
+- `--output-dir TEXT`: Output directory for downloaded videos
+
+#### Example
+
+```bash
+transfer-learning download "https://youtube.com/watch?v=VIDEO_ID" --output-dir videos
+```
+
+### config
+
+Configure environment variables and settings.
+
+```bash
+transfer-learning config [OPTIONS]
+```
+
+#### Options
+
+- `--show`: Show current configuration
+- `--reset`: Reset configuration to defaults
+
+#### Example
+
+```bash
+transfer-learning config --show
 ```
 
 ## Global Options
 
-These options are available for most commands:
+These options are available for all commands:
 
-| Option | Description | Default |
-| ------ | ----------- | ------- |
-| `--output-dir` | Directory to store outputs | Varies by command |
-| `--batch-size` | Number of frames to process in each batch | From config |
-| `--max-concurrent` | Maximum number of concurrent batches | From config |
-| `--help` | Show help message and exit | - |
+- `--help`: Show help message and exit
+- `--version`: Show version and exit
 
-## Getting Help
+## Environment Variables
 
-To get help for any command, use the `--help` option:
+Transfer Learning uses the following environment variables:
 
-```bash
-transfer-learning process-video --help
-```
+- `OPENAI_API_KEY`: OpenAI API key for vision and guide generation
+- `FRAME_EXTRACTION_INTERVAL`: Interval between frame extractions
+- `MAX_FRAMES_PER_VIDEO`: Maximum number of frames to extract per video
+- `BATCH_SIZE`: Number of frames to process in each batch
+- `MAX_CONCURRENT_BATCHES`: Maximum number of concurrent batches
+- `WHISPER_MODEL`: Whisper model to use for transcription
+- `WHISPER_DEVICE`: Device to use for transcription (cpu/cuda)
+- `ENABLE_MONITORING`: Enable or disable monitoring (true/false)
+- `LOG_LEVEL`: Logging level (INFO, DEBUG, WARNING, ERROR)
 
-## Command Details
-
-For detailed information about each command, including all available options and examples, click on the command links below:
-
-<CardGroup cols={2}>
-  <Card
-    title="Process Video"
-    icon="film"
-    href="/cli/process-video"
-  >
-    Extract frames from local video files
-  </Card>
-  <Card
-    title="Generate Guide"
-    icon="book"
-    href="/cli/generate-guide"
-  >
-    Create step-by-step guides from processed data
-  </Card>
-  <Card
-    title="Process YouTube"
-    icon="youtube"
-    href="/cli/process-youtube"
-  >
-    Download and process YouTube videos
-  </Card>
-  <Card
-    title="YouTube Guide"
-    icon="video"
-    href="/cli/youtube-guide"
-  >
-    Complete YouTube processing pipeline
-  </Card>
-  <Card
-    title="Transcribe"
-    icon="microphone"
-    href="/cli/transcribe"
-  >
-    Extract and transcribe audio
-  </Card>
-  <Card
-    title="Analyze"
-    icon="magnifying-glass"
-    href="/cli/analyze"
-  >
-    Analyze video content
-  </Card>
-  <Card
-    title="Download"
-    icon="download"
-    href="/cli/download"
-  >
-    Download videos from various sources
-  </Card>
-  <Card
-    title="Utilities"
-    icon="wrench"
-    href="/cli/utilities"
-  >
-    Utility commands (cleanup, stop, config)
-  </Card>
-</CardGroup> 
+These can be set in a `.env` file in the project root directory. 

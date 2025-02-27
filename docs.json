@@ -80,12 +80,12 @@
       "anchors": [
         {
           "anchor": "GitHub",
-          "href": "https://github.com/yourusername/transfer-learning",
+          "href": "https://github.com/Wearer-Lab/Transfert-Learning",
           "icon": "github"
         },
         {
           "anchor": "Documentation",
-          "href": "https://docs.example.com/introduction",
+          "href": "https://docs.wearer.xyz/introduction",
           "icon": "book-open-cover"
         }
       ]
@@ -99,18 +99,18 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:support@example.com"
+        "href": "mailto:support@wearer.xyz"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Get Started",
-      "href": "https://docs.example.com/quickstart"
+      "href": "https://docs.wearer.xyz/quickstart"
     }
   },
   "footer": {
     "socials": {
-      "github": "https://github.com/yourusername/transfer-learning"
+      "github": "https://github.com/Wearer-Lab/Transfert-Learning"
     }
   }
 }

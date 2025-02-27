@@ -1,265 +1,326 @@
 ---
 title: 'Development Guide'
-description: 'Contribute to or extend the Transfer Learning video processing pipeline'
+description: 'Contribute to or extend Transfer Learning'
 ---
 
-## Development Environment Setup
+# Development Guide
 
-This guide will help you set up a development environment for contributing to or extending the Transfer Learning video processing pipeline.
+This guide provides information for developers who want to contribute to or extend Transfer Learning.
 
-### Prerequisites
+## Project Structure
 
-Before setting up your development environment, ensure you have:
+The Transfer Learning project follows a modular architecture with clear separation of concerns:
 
-- Python 3.9 or higher
-- Git
-- FFmpeg installed on your system
-- An OpenAI API key (for testing)
+```
+transfer-learning/
+├── data/               # Data storage directory
+├── docs/               # Documentation
+├── logs/               # Log files
+├── metrics/            # Metrics collection
+├── src/                # Source code
+│   └── transfer_learning/
+│       ├── core/       # Core processing modules
+│       │   ├── video_processor.py
+│       │   ├── audio_transcriber.py
+│       │   ├── content_analyzer.py
+│       │   └── frame_extractor.py
+│       ├── guide/      # Guide generation
+│       │   └── generator.py
+│       ├── models/     # AI model interfaces
+│       │   ├── openai.py
+│       │   └── whisper.py
+│       ├── monitoring/ # Monitoring and metrics
+│       │   ├── logger.py
+│       │   └── metrics.py
+│       ├── utils/      # Utility functions
+│       │   ├── downloader.py
+│       │   ├── validation.py
+│       │   └── path.py
+│       ├── cli.py      # CLI implementation
+│       └── config.py   # Configuration
+├── tests/              # Test suite
+├── .env                # Environment variables
+├── pyproject.toml      # Project configuration
+└── setup.py            # Package setup
+```
 
-### Setting Up Your Development Environment
+## Development Setup
 
 <Steps>
-  <Step title="Clone the repository">
+  <Step title="Clone the Repository">
     ```bash
-    git clone https://github.com/yourusername/transfer-learning.git
-    cd transfer-learning
+    git clone https://github.com/Wearer-Lab/Transfert-Learning.git
+    cd Transfert-Learning
     ```
   </Step>
-  <Step title="Create a virtual environment">
-    Using UV (recommended):
-    ```bash
-    pip install uv
-    uv venv
-    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-    ```
-    
-    Or using venv:
+  <Step title="Set Up Virtual Environment">
     ```bash
     python -m venv .venv
-    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+    source .venv/bin/activate  # On Windows, use `.venv\Scripts\activate`
     ```
   </Step>
-  <Step title="Install development dependencies">
+  <Step title="Install Development Dependencies">
     ```bash
+    pip install uv
     uv pip install -e ".[dev]"
     ```
-    
-    This installs the package in development mode with all development dependencies.
   </Step>
-  <Step title="Set up pre-commit hooks">
-    ```bash
-    pre-commit install
-    ```
+  <Step title="Set Up Environment Variables">
+    Create a `.env` file in the project root directory:
     
-    This sets up Git hooks to automatically format and lint your code before commits.
-  </Step>
-  <Step title="Configure environment variables">
-    Create a `.env` file in the project root:
     ```bash
     OPENAI_API_KEY=your-api-key-here
+    ENABLE_MONITORING=true
     LOG_LEVEL=DEBUG
     ```
   </Step>
 </Steps>
 
-## Project Structure
-
-The Transfer Learning project is organized as follows:
-
-```
-transfer_learning/
-├── cli/                  # CLI command implementations
-│   ├── commands/         # Individual command modules
-│   └── utils/            # CLI utilities
-├── core/                 # Core functionality
-│   ├── video/            # Video processing components
-│   ├── audio/            # Audio processing components
-│   ├── guide/            # Guide generation components
-│   └── models/           # AI model integrations
-├── utils/                # Utility functions and helpers
-├── monitoring/           # Monitoring and metrics collection
-├── config/               # Configuration management
-├── api/                  # API implementation
-└── tests/                # Test suite
-```
-
 ## Development Workflow
 
-### Running Tests
-
-Run the test suite to ensure your changes don't break existing functionality:
-
-```bash
-pytest
-```
-
-Run tests with coverage report:
-
-```bash
-pytest --cov=transfer_learning
-```
-
-### Code Style and Linting
-
-The project uses Black for code formatting, isort for import sorting, and flake8 for linting:
-
-```bash
-# Format code
-black transfer_learning tests
-
-# Sort imports
-isort transfer_learning tests
-
-# Run linter
-flake8 transfer_learning tests
-```
-
-These checks are automatically run by pre-commit hooks, but you can run them manually as needed.
-
-### Building Documentation
-
-To build and preview the documentation locally:
-
-```bash
-cd docs
-npm install
-mintlify dev
-```
-
-The documentation will be available at http://localhost:3000.
-
-## Adding New Features
-
-### Adding a New CLI Command
-
-1. Create a new file in `transfer_learning/cli/commands/` for your command
-2. Implement your command using the Click library
-3. Register your command in `transfer_learning/cli/__init__.py`
-4. Add tests in `tests/cli/commands/`
-5. Add documentation in `docs/cli/your-command.mdx`
-
-Example of a new command implementation:
-
-```python
-import click
-from transfer_learning.cli.utils import common_options
-
-@click.command()
-@common_options
-@click.argument('input_path', type=click.Path(exists=True))
-@click.option('--custom-option', help='Description of your custom option')
-def your_command(input_path, custom_option, **kwargs):
-    """Description of your command."""
-    # Implement your command logic here
-    click.echo(f"Processing {input_path} with {custom_option}")
-```
-
-### Adding Core Functionality
-
-1. Identify the appropriate module for your feature
-2. Implement your feature with proper error handling and logging
-3. Add tests for your feature
-4. Update documentation to reflect the new functionality
-
-### Extending the API
-
-1. Add your new functionality to the appropriate module in `transfer_learning/api/`
-2. Ensure proper type hints and docstrings
-3. Add tests for your API extension
-4. Update the API reference documentation
-
-## Submitting Changes
-
-<Steps>
-  <Step title="Create a branch">
-    ```bash
-    git checkout -b feature/your-feature-name
-    ```
-  </Step>
-  <Step title="Make your changes">
-    Implement your feature or fix, following the project's code style.
-  </Step>
-  <Step title="Run tests">
+<AccordionGroup>
+  <Accordion title="Running Tests">
+    Run the test suite to ensure your changes don't break existing functionality:
+    
     ```bash
     pytest
     ```
     
-    Ensure all tests pass before submitting your changes.
-  </Step>
-  <Step title="Commit your changes">
+    Run tests with coverage report:
+    
     ```bash
-    git add .
-    git commit -m "Add feature: your feature description"
+    pytest --cov=transfer_learning
+    ```
+  </Accordion>
+  
+  <Accordion title="Code Style">
+    Check code style with Ruff:
+    
+    ```bash
+    ruff check .
     ```
     
-    Pre-commit hooks will automatically format and lint your code.
-  </Step>
-  <Step title="Push your changes">
-    ```bash
-    git push origin feature/your-feature-name
-    ```
-  </Step>
-  <Step title="Create a pull request">
-    Go to the GitHub repository and create a pull request from your branch.
+    Format code with Black:
     
-    Provide a clear description of your changes and any related issues.
-  </Step>
-</Steps>
+    ```bash
+    black src tests
+    ```
+  </Accordion>
+  
+  <Accordion title="Running the CLI">
+    Run the CLI in development mode:
+    
+    ```bash
+    python -m transfer_learning.cli process-video path/to/video.mp4
+    ```
+    
+    Or use the installed entry point:
+    
+    ```bash
+    transfer-learning process-video path/to/video.mp4
+    ```
+  </Accordion>
+</AccordionGroup>
 
-## Release Process
+## Extending Transfer Learning
 
-The project follows semantic versioning (MAJOR.MINOR.PATCH):
+### Adding a New Command
 
-1. Update the version in `pyproject.toml`
-2. Update the CHANGELOG.md file
-3. Create a new Git tag with the version number
-4. Push the tag to trigger the release workflow
+To add a new command to the CLI:
 
-```bash
-# Example for version 1.2.3
-git tag v1.2.3
-git push origin v1.2.3
+1. Open `src/transfer_learning/cli.py`
+2. Add a new function with the `@app.command()` decorator:
+
+```python
+@app.command()
+def my_new_command(
+    arg1: str = typer.Argument(..., help="Description of arg1"),
+    option1: str = typer.Option("default", help="Description of option1"),
+):
+    """Description of my new command."""
+    # Command implementation
+    console.print(f"Running my new command with {arg1} and {option1}")
 ```
 
-## Performance Considerations
+### Adding a New Module
 
-When developing for Transfer Learning, keep these performance considerations in mind:
+To add a new module:
 
-1. **Asynchronous Processing**: Use async/await for I/O-bound operations
-2. **Batch Processing**: Implement batching for operations that can be parallelized
-3. **Memory Management**: Be mindful of memory usage, especially when processing large videos
-4. **Caching**: Implement caching for expensive operations
-5. **Monitoring**: Add appropriate metrics collection for new features
+1. Create a new Python file in the appropriate directory
+2. Implement your module functionality
+3. Import and use it in the CLI or other modules
 
-## Getting Help
+Example of a new utility module:
 
-If you need help with development:
+```python
+# src/transfer_learning/utils/my_utility.py
+"""My utility module."""
 
-- Check the existing documentation
-- Look at the test suite for examples
-- Open an issue on GitHub with questions
-- Join the community Discord server
+def my_utility_function(param1: str, param2: int = 10) -> str:
+    """
+    Description of my utility function.
+    
+    Args:
+        param1: Description of param1
+        param2: Description of param2
+        
+    Returns:
+        Description of return value
+    """
+    return f"{param1} processed with {param2}"
+```
 
-<CardGroup>
-  <Card
-    title="API Reference"
-    icon="book"
-    href="/api-reference/introduction"
-  >
-    Explore the API documentation
+### Enhancing Monitoring
+
+To add new metrics to the monitoring system:
+
+1. Open `src/transfer_learning/monitoring/metrics.py`
+2. Add new fields to the `ProcessingMetrics` dataclass
+3. Update the `to_dict` method to include the new fields
+4. Use the new metrics in your code
+
+## Documentation
+
+Transfer Learning uses Mintlify for documentation. To update the documentation:
+
+1. Edit the MDX files in the `docs` directory
+2. Preview the documentation locally:
+
+```bash
+npx mintlify dev
+```
+
+3. Submit a pull request with your documentation changes
+
+## Contribution Guidelines
+
+<CardGroup cols={2}>
+  <Card title="Code Style" icon="code" color="#4f46e5">
+    - Follow PEP 8 guidelines
+    - Use type hints for all functions
+    - Write docstrings for all modules, classes, and functions
+    - Keep functions small and focused
   </Card>
-  <Card
-    title="CLI Commands"
-    icon="terminal"
-    href="/cli/overview"
-  >
-    Learn about the CLI commands
+  <Card title="Testing" icon="vial" color="#0ea5e9">
+    - Write tests for all new functionality
+    - Ensure all tests pass before submitting a PR
+    - Aim for high test coverage
+    - Include both unit and integration tests
   </Card>
-  <Card
-    title="Optimization"
-    icon="bolt"
-    href="/advanced/optimization"
-  >
-    Performance optimization techniques
+  <Card title="Documentation" icon="book" color="#10b981">
+    - Update documentation for all new features
+    - Include examples in docstrings
+    - Keep the README and docs in sync
+    - Document configuration options
+  </Card>
+  <Card title="Pull Requests" icon="code-pull-request" color="#f59e0b">
+    - Create a feature branch for your changes
+    - Keep PRs focused on a single feature or fix
+    - Include a clear description of changes
+    - Reference any related issues
   </Card>
 </CardGroup>
+
+## Development Checklist
+
+Use this checklist when developing new features:
+
+- [ ] Implement the feature
+- [ ] Write tests
+- [ ] Update documentation
+- [ ] Check code style
+- [ ] Run the test suite
+- [ ] Update the README if necessary
+- [ ] Submit a pull request
+
+## Monitoring and Logging
+
+Transfer Learning includes a comprehensive monitoring and logging system:
+
+<Tabs>
+  <Tab title="Metrics">
+    The `MetricsTracker` class in `src/transfer_learning/monitoring/metrics.py` provides metrics collection:
+    
+    ```python
+    from transfer_learning.monitoring.metrics import MetricsTracker, Timer
+    
+    # Initialize metrics tracker
+    metrics = MetricsTracker()
+    
+    # Start tracking metrics for a video
+    metrics.start_processing("video_id")
+    
+    # Use timer context manager to track duration
+    with Timer(metrics, "frame_analysis_duration"):
+        # Process frames
+        analyze_frames(frames)
+    
+    # Update metrics manually
+    metrics.update_metrics(
+        frame_count=100,
+        processed_frames=100,
+        error_count=0
+    )
+    
+    # End tracking and save metrics
+    metrics.end_processing()
+    ```
+  </Tab>
+  <Tab title="Logging">
+    The `setup_logger` function in `src/transfer_learning/monitoring/logger.py` provides logging:
+    
+    ```python
+    from transfer_learning.monitoring.logger import setup_logger
+    
+    # Set up logger
+    logger = setup_logger(
+        name=__name__,
+        log_file="logs/my_module.log",
+        level="DEBUG"
+    )
+    
+    # Use logger
+    logger.info("Processing started")
+    logger.debug("Detailed debug information")
+    logger.warning("Warning message")
+    logger.error("Error message")
+    ```
+  </Tab>
+</Tabs>
+
+## Performance Optimization
+
+When developing performance-critical components:
+
+1. Use asynchronous processing for I/O-bound operations
+2. Implement batching for API calls
+3. Use caching to avoid redundant processing
+4. Monitor memory usage and optimize as needed
+
+Example of asynchronous processing:
+
+```python
+import asyncio
+from typing import List, Dict, Any
+
+async def process_batch(batch: List[str]) -> List[Dict[str, Any]]:
+    """Process a batch of items asynchronously."""
+    tasks = [process_item(item) for item in batch]
+    return await asyncio.gather(*tasks)
+
+async def process_item(item: str) -> Dict[str, Any]:
+    """Process a single item."""
+    # Implement processing logic
+    return {"item": item, "result": "processed"}
+
+async def main():
+    """Main processing function."""
+    batches = [["item1", "item2"], ["item3", "item4"]]
+    results = []
+    
+    for batch in batches:
+        batch_results = await process_batch(batch)
+        results.extend(batch_results)
+    
+    return results
+```

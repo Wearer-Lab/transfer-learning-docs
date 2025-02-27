@@ -1,91 +1,150 @@
 ---
-title: Introduction
-description: "Transfer Learning Video Processing Pipeline - A powerful CLI tool for processing videos and generating step-by-step guides using AI"
+title: 'Introduction'
+description: 'Transfer Learning Video Processing Pipeline - A powerful CLI tool for processing videos and generating step-by-step guides using AI'
 ---
 
-<img
-  className="block dark:hidden"
-  src="/images/hero-light.png"
-  alt="Hero Light"
-/>
-<img
-  className="hidden dark:block"
-  src="/images/hero-dark.png"
-  alt="Hero Dark"
-/>
+# Transfer Learning
 
-## Welcome to Transfer Learning
-
-Transfer Learning is a powerful CLI tool for processing videos and generating step-by-step guides using AI. This tool can handle both local video files and YouTube videos, extracting key frames and generating detailed guides using OpenAI's GPT-4 Vision API.
+Transfer Learning is a powerful CLI tool and Python library designed to process videos and generate detailed step-by-step guides using AI. It leverages advanced video processing techniques and large language models to extract meaningful information from video content and transform it into structured guides.
 
 ## Key Features
 
 <CardGroup cols={2}>
-  <Card
-    title="Process Local Videos"
-    icon="film"
-    href="/cli/process-video"
-  >
-    Extract frames from local video files and analyze their content
+  <Card title="Video Processing" icon="film" color="#4f46e5">
+    Process local video files by extracting frames at configurable intervals and analyzing their content using AI vision models.
   </Card>
-  <Card
-    title="Process YouTube Videos"
-    icon="youtube"
-    href="/cli/process-youtube"
-  >
-    Download and process videos directly from YouTube
+  <Card title="YouTube Integration" icon="youtube" color="#ef4444">
+    Download and process YouTube videos directly by providing a URL, with automatic handling of video quality and format.
   </Card>
-  <Card
-    title="Generate Guides"
-    icon="book"
-    href="/cli/generate-guide"
-  >
-    Create detailed step-by-step guides from processed video frames
+  <Card title="Guide Generation" icon="book" color="#0ea5e9">
+    Generate comprehensive step-by-step guides from processed video data, with customizable formats and detail levels.
   </Card>
-  <Card
-    title="Transcribe Audio"
-    icon="microphone"
-    href="/cli/transcribe"
-  >
-    Extract and transcribe audio from videos
+  <Card title="Audio Transcription" icon="microphone" color="#10b981">
+    Transcribe audio from videos using Whisper models, with support for multiple languages and timestamp alignment.
+  </Card>
+  <Card title="Content Analysis" icon="magnifying-glass" color="#f59e0b">
+    Analyze video content to extract key information, identify objects, and understand context using AI vision models.
+  </Card>
+  <Card title="Monitoring" icon="chart-line" color="#8b5cf6">
+    Built-in monitoring and metrics collection to track performance, resource usage, and processing status.
+  </Card>
+  <Card title="Customizable Configuration" icon="gear" color="#64748b">
+    Extensive configuration options to tailor processing parameters, output formats, and AI model selection.
+  </Card>
+  <Card title="Optimized Performance" icon="bolt" color="#f97316">
+    Asynchronous processing, batching, and caching mechanisms to maximize performance and resource efficiency.
   </Card>
 </CardGroup>
 
-## Advanced Capabilities
+## Use Cases
 
-<CardGroup cols={2}>
-  <Card
-    title="Content Analysis"
-    icon="magnifying-glass"
-    href="/cli/analyze"
-  >
-    Perform detailed analysis of video content using AI
-  </Card>
-  <Card
-    title="Monitoring & Metrics"
-    icon="chart-line"
-    href="/advanced/monitoring"
-  >
-    Track performance and usage metrics
-  </Card>
-  <Card
-    title="Customizable Configuration"
-    icon="gear"
-    href="/advanced/configuration"
-  >
-    Tailor the tool to your specific needs
-  </Card>
-  <Card
-    title="Optimized Performance"
-    icon="bolt"
-    href="/advanced/optimization"
-  >
-    Process videos efficiently with parallel processing
-  </Card>
-</CardGroup>
+Transfer Learning is designed for a variety of use cases:
+
+- **Content Creators**: Generate detailed tutorials from video demonstrations
+- **Educators**: Transform educational videos into structured learning materials
+- **Developers**: Extract step-by-step processes from technical videos
+- **Researchers**: Analyze video content for research purposes
+- **Documentation Teams**: Automate the creation of visual documentation
+
+## Modern Tools
+
+Transfer Learning is built with modern tools and technologies:
+
+- **UV Package Manager**: Fast, reliable Python package management
+- **Rich CLI Interface**: Beautiful terminal output with progress bars and status indicators
+- **Async Processing**: Efficient handling of I/O-bound operations
+- **OpenAI Integration**: Leveraging GPT-4 Vision for advanced image analysis
+- **Whisper Models**: State-of-the-art audio transcription
 
 ## Getting Started
 
-To get started with Transfer Learning, check out our [Quickstart Guide](/quickstart) or dive into the [CLI Commands](/cli/overview) documentation.
+Ready to start using Transfer Learning? Check out our Quickstart Guide to get up and running in minutes.
 
-For developers interested in contributing or extending the tool, visit our [Development Guide](/development).
+<CardGroup>
+  <Card
+    title="Quickstart Guide"
+    icon="rocket"
+    href="/quickstart"
+  >
+    Install and start using Transfer Learning in minutes
+  </Card>
+  <Card
+    title="CLI Commands"
+    icon="terminal"
+    href="/cli/overview"
+  >
+    Explore the available commands and their options
+  </Card>
+</CardGroup>
+
+## Example Workflow
+
+A typical workflow with Transfer Learning might look like this:
+
+1. **Process a video** to extract frames and analyze content:
+   ```bash
+   transfer-learning process-video tutorial.mp4
+   ```
+
+2. **Generate a guide** from the processed data:
+   ```bash
+   transfer-learning generate-guide data/tutorial
+   ```
+
+3. **View the generated guide** in your preferred format (markdown, HTML, etc.)
+
+For YouTube videos, you can combine these steps:
+
+```bash
+transfer-learning youtube-guide "https://www.youtube.com/watch?v=VIDEO_ID"
+```
+
+## Architecture
+
+Transfer Learning follows a modular architecture with clear separation of concerns:
+
+<Frame>
+  <img src="/images/architecture.png" alt="Transfer Learning Architecture" />
+</Frame>
+
+The pipeline consists of several key components:
+
+1. **Input Handling**: Processing local videos or downloading from YouTube
+2. **Frame Extraction**: Extracting frames at configurable intervals
+3. **Content Analysis**: Analyzing frame content using AI vision models
+4. **Audio Transcription**: Transcribing audio using Whisper models
+5. **Guide Generation**: Generating structured guides from analyzed content
+6. **Output Formatting**: Formatting guides in various output formats
+
+## Next Steps
+
+<CardGroup>
+  <Card
+    title="Installation"
+    icon="download"
+    href="/quickstart#installation"
+  >
+    Install Transfer Learning on your system
+  </Card>
+  <Card
+    title="Configuration"
+    icon="gear"
+    href="/advanced/configuration"
+  >
+    Configure Transfer Learning for your needs
+  </Card>
+  <Card
+    title="API Reference"
+    icon="book"
+    href="/api-reference/introduction"
+  >
+    Use Transfer Learning as a Python library
+  </Card>
+  <Card
+    title="Development Guide"
+    icon="code"
+    href="/development"
+  >
+    Contribute to or extend Transfer Learning
+  </Card>
+</CardGroup>

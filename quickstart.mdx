@@ -1,97 +1,178 @@
 ---
 title: 'Quickstart'
-description: 'Start building awesome documentation in under 5 minutes'
+description: 'Get started with Transfer Learning in minutes'
 ---
 
-## Setup your development
+## Installation
 
-Learn how to update your docs locally and deploy them to the public.
+Get up and running with Transfer Learning quickly by following these steps.
 
-### Edit and preview
+### Prerequisites
+
+Before installing Transfer Learning, make sure you have:
+
+- Python 3.9 or higher
+- An OpenAI API key (for GPT-4 Vision)
+- FFmpeg installed on your system (for video processing)
 
 <AccordionGroup>
-  <Accordion icon="github" title="Clone your docs locally">
-    During the onboarding process, we created a repository on your Github with
-    your docs content. You can find this repository on our
-    [dashboard](https://dashboard.mintlify.com). To clone the repository
-    locally, follow these
-    [instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
-    in your terminal.
+  <Accordion icon="key" title="Setting up your OpenAI API key">
+    1. Create an account on [OpenAI](https://platform.openai.com/) if you don't have one
+    2. Navigate to the API section and create a new API key
+    3. Copy your API key for use during installation
   </Accordion>
-  <Accordion icon="rectangle-terminal" title="Preview changes">
-    Previewing helps you make sure your changes look as intended. We built a
-    command line interface to render these changes locally. 
-    1. Install the
-    [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview the
-    documentation changes locally with this command: ``` npm i -g mintlify ```
-    2. Run the following command at the root of your documentation (where
-    `docs.json` is): ``` mintlify dev ```
-    <Note>
-      If you’re currently using the legacy ```mint.json``` configuration file, please update the Mintlify CLI:
-
-
-      ```npm i -g mintlify@latest```
-      And run the new upgrade command in your docs repository:
-
-      ```mintlify upgrade```
-      You should now be using the new ```docs.json``` configuration file. Feel free to delete the ```mint.json``` file from your repository.
-    </Note>
+  <Accordion icon="film" title="Installing FFmpeg">
+    **On macOS (using Homebrew):**
+    ```bash
+    brew install ffmpeg
+    ```
+    
+    **On Ubuntu/Debian:**
+    ```bash
+    sudo apt update
+    sudo apt install ffmpeg
+    ```
+    
+    **On Windows:**
+    Download from [FFmpeg's official website](https://ffmpeg.org/download.html) or install using Chocolatey:
+    ```bash
+    choco install ffmpeg
+    ```
   </Accordion>
 </AccordionGroup>
 
-### Deploy your changes
+### Installation Steps
 
-<AccordionGroup>
+<Steps>
+  <Step title="Install Transfer Learning">
+    Install using UV (recommended):
+    
+    ```bash
+    pip install uv
+    uv pip install transfer-learning
+    ```
+    
+    Or using pip:
+    
+    ```bash
+    pip install transfer-learning
+    ```
+  </Step>
+  <Step title="Set up your API key">
+    Create a `.env` file in your working directory:
+    
+    ```bash
+    echo "OPENAI_API_KEY=your-api-key-here" > .env
+    ```
+    
+    Or set it as an environment variable:
+    
+    ```bash
+    export OPENAI_API_KEY=your-api-key-here
+    ```
+  </Step>
+  <Step title="Verify installation">
+    Run the following command to verify that Transfer Learning is installed correctly:
+    
+    ```bash
+    transfer-learning --version
+    ```
+    
+    You should see the version number displayed.
+  </Step>
+</Steps>
 
-<Accordion icon="message-bot" title="Install our Github app">
-  Our Github app automatically deploys your changes to your docs site, so you
-  don't need to manage deployments yourself. You can find the link to install on
-  your [dashboard](https://dashboard.mintlify.com). Once the bot has been
-  successfully installed, there should be a check mark next to the commit hash
-  of the repo.
-</Accordion>
-<Accordion icon="rocket" title="Push your changes">
-  [Commit and push your changes to
-  Git](https://docs.github.com/en/get-started/using-git/pushing-commits-to-a-remote-repository#about-git-push)
-  for your changes to update in your docs site. If you push and don't see that
-  the Github app successfully deployed your changes, you can also manually
-  update your docs through our [dashboard](https://dashboard.mintlify.com).
-</Accordion>
+## Quick Examples
 
-</AccordionGroup>
+Here are some quick examples to get you started with Transfer Learning.
 
-## Update your docs
+### Process a Local Video
 
-Add content directly in your files with MDX syntax and React components. You can use any of our components, or even build your own.
+Extract frames from a local video file and analyze their content:
+
+```bash
+transfer-learning process-video path/to/video.mp4
+```
+
+### Generate a Guide from Processed Video
+
+Generate a step-by-step guide from previously processed video data:
+
+```bash
+transfer-learning generate-guide data/video_name
+```
+
+### Process a YouTube Video
+
+Download and process a YouTube video:
+
+```bash
+transfer-learning process-youtube "https://www.youtube.com/watch?v=VIDEO_ID"
+```
+
+### Complete YouTube Pipeline
+
+Download a YouTube video and generate a guide in one command:
+
+```bash
+transfer-learning youtube-guide "https://www.youtube.com/watch?v=VIDEO_ID"
+```
+
+## Next Steps
 
 <CardGroup>
-
-<Card title="Add Content With MDX" icon="file" href="/essentials/markdown">
-  Add content to your docs with MDX syntax.
-</Card>
-
-<Card
-  title="Add Code Blocks"
-  icon="square-code"
-  href="/essentials/code"
->
-  Add code directly to your docs with syntax highlighting.
-</Card>
-
-<Card
-  title="Add Images"
-  icon="image"
-  href="/essentials/images"
->
-  Add images to your docs to make them more engaging.
-</Card>
-
-<Card
-  title="Add Custom Components"
-  icon="puzzle-piece"
-  href="/essentials/reusable-snippets"
->
-  Add templates to your docs to make them more reusable.
-</Card>
-
+  <Card
+    title="Explore CLI Commands"
+    icon="terminal"
+    href="/cli/overview"
+  >
+    Learn about all available commands and their options
+  </Card>
+  <Card
+    title="Configuration"
+    icon="gear"
+    href="/advanced/configuration"
+  >
+    Customize Transfer Learning to your needs
+  </Card>
+  <Card
+    title="Development Guide"
+    icon="code"
+    href="/development"
+  >
+    Contribute to or extend Transfer Learning
+  </Card>
+  <Card
+    title="API Reference"
+    icon="book"
+    href="/api-reference/introduction"
+  >
+    Use Transfer Learning as a Python library
+  </Card>
 </CardGroup>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion icon="triangle-exclamation" title="OpenAI API key issues">
+    If you encounter errors related to the OpenAI API key:
+    
+    1. Verify that your API key is correct
+    2. Check that your API key has sufficient credits
+    3. Ensure the API key is properly set in your environment or `.env` file
+  </Accordion>
+  <Accordion icon="video" title="Video processing issues">
+    If you encounter issues with video processing:
+    
+    1. Verify that FFmpeg is installed and accessible in your PATH
+    2. Check that the video file is not corrupted
+    3. Try processing with a smaller frame interval: `--frame-interval 60`
+  </Accordion>
+  <Accordion icon="memory" title="Memory or performance issues">
+    If you encounter memory or performance issues:
+    
+    1. Reduce batch size: `--batch-size 5`
+    2. Reduce concurrent batches: `--max-concurrent 2`
+    3. Increase frame interval to extract fewer frames: `--frame-interval 60`
+  </Accordion>
+</AccordionGroup>

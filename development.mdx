@@ -1,107 +1,265 @@
 ---
-title: 'Development'
-description: 'Preview changes locally to update your docs'
+title: 'Development Guide'
+description: 'Contribute to or extend the Transfer Learning video processing pipeline'
 ---
 
-<Info>
-  **Prerequisite**: Please install Node.js (version 19 or higher) before proceeding. <br />
-  Please upgrade to ```docs.json``` before proceeding and delete the legacy ```mint.json``` file.
-</Info>
+## Development Environment Setup
 
-Follow these steps to install and run Mintlify on your operating system:
+This guide will help you set up a development environment for contributing to or extending the Transfer Learning video processing pipeline.
 
-**Step 1**: Install Mintlify:
+### Prerequisites
 
-<CodeGroup>
+Before setting up your development environment, ensure you have:
 
-  ```bash npm
-  npm i -g mintlify
-  ```
+- Python 3.9 or higher
+- Git
+- FFmpeg installed on your system
+- An OpenAI API key (for testing)
 
-```bash yarn
-yarn global add mintlify
+### Setting Up Your Development Environment
+
+<Steps>
+  <Step title="Clone the repository">
+    ```bash
+    git clone https://github.com/yourusername/transfer-learning.git
+    cd transfer-learning
+    ```
+  </Step>
+  <Step title="Create a virtual environment">
+    Using UV (recommended):
+    ```bash
+    pip install uv
+    uv venv
+    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+    ```
+    
+    Or using venv:
+    ```bash
+    python -m venv .venv
+    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+    ```
+  </Step>
+  <Step title="Install development dependencies">
+    ```bash
+    uv pip install -e ".[dev]"
+    ```
+    
+    This installs the package in development mode with all development dependencies.
+  </Step>
+  <Step title="Set up pre-commit hooks">
+    ```bash
+    pre-commit install
+    ```
+    
+    This sets up Git hooks to automatically format and lint your code before commits.
+  </Step>
+  <Step title="Configure environment variables">
+    Create a `.env` file in the project root:
+    ```bash
+    OPENAI_API_KEY=your-api-key-here
+    LOG_LEVEL=DEBUG
+    ```
+  </Step>
+</Steps>
+
+## Project Structure
+
+The Transfer Learning project is organized as follows:
+
+```
+transfer_learning/
+├── cli/                  # CLI command implementations
+│   ├── commands/         # Individual command modules
+│   └── utils/            # CLI utilities
+├── core/                 # Core functionality
+│   ├── video/            # Video processing components
+│   ├── audio/            # Audio processing components
+│   ├── guide/            # Guide generation components
+│   └── models/           # AI model integrations
+├── utils/                # Utility functions and helpers
+├── monitoring/           # Monitoring and metrics collection
+├── config/               # Configuration management
+├── api/                  # API implementation
+└── tests/                # Test suite
 ```
 
-</CodeGroup>
+## Development Workflow
 
-**Step 2**: Navigate to the docs directory (where the `docs.json` file is located) and execute the following command:
+### Running Tests
+
+Run the test suite to ensure your changes don't break existing functionality:
 
 ```bash
+pytest
+```
+
+Run tests with coverage report:
+
+```bash
+pytest --cov=transfer_learning
+```
+
+### Code Style and Linting
+
+The project uses Black for code formatting, isort for import sorting, and flake8 for linting:
+
+```bash
+# Format code
+black transfer_learning tests
+
+# Sort imports
+isort transfer_learning tests
+
+# Run linter
+flake8 transfer_learning tests
+```
+
+These checks are automatically run by pre-commit hooks, but you can run them manually as needed.
+
+### Building Documentation
+
+To build and preview the documentation locally:
+
+```bash
+cd docs
+npm install
 mintlify dev
 ```
 
-A local preview of your documentation will be available at `http://localhost:3000`.
+The documentation will be available at http://localhost:3000.
 
-### Custom Ports
+## Adding New Features
 
-By default, Mintlify uses port 3000. You can customize the port Mintlify runs on by using the `--port` flag. To run Mintlify on port 3333, for instance, use this command:
+### Adding a New CLI Command
+
+1. Create a new file in `transfer_learning/cli/commands/` for your command
+2. Implement your command using the Click library
+3. Register your command in `transfer_learning/cli/__init__.py`
+4. Add tests in `tests/cli/commands/`
+5. Add documentation in `docs/cli/your-command.mdx`
+
+Example of a new command implementation:
+
+```python
+import click
+from transfer_learning.cli.utils import common_options
+
+@click.command()
+@common_options
+@click.argument('input_path', type=click.Path(exists=True))
+@click.option('--custom-option', help='Description of your custom option')
+def your_command(input_path, custom_option, **kwargs):
+    """Description of your command."""
+    # Implement your command logic here
+    click.echo(f"Processing {input_path} with {custom_option}")
+```
+
+### Adding Core Functionality
+
+1. Identify the appropriate module for your feature
+2. Implement your feature with proper error handling and logging
+3. Add tests for your feature
+4. Update documentation to reflect the new functionality
+
+### Extending the API
+
+1. Add your new functionality to the appropriate module in `transfer_learning/api/`
+2. Ensure proper type hints and docstrings
+3. Add tests for your API extension
+4. Update the API reference documentation
+
+## Submitting Changes
+
+<Steps>
+  <Step title="Create a branch">
+    ```bash
+    git checkout -b feature/your-feature-name
+    ```
+  </Step>
+  <Step title="Make your changes">
+    Implement your feature or fix, following the project's code style.
+  </Step>
+  <Step title="Run tests">
+    ```bash
+    pytest
+    ```
+    
+    Ensure all tests pass before submitting your changes.
+  </Step>
+  <Step title="Commit your changes">
+    ```bash
+    git add .
+    git commit -m "Add feature: your feature description"
+    ```
+    
+    Pre-commit hooks will automatically format and lint your code.
+  </Step>
+  <Step title="Push your changes">
+    ```bash
+    git push origin feature/your-feature-name
+    ```
+  </Step>
+  <Step title="Create a pull request">
+    Go to the GitHub repository and create a pull request from your branch.
+    
+    Provide a clear description of your changes and any related issues.
+  </Step>
+</Steps>
+
+## Release Process
+
+The project follows semantic versioning (MAJOR.MINOR.PATCH):
+
+1. Update the version in `pyproject.toml`
+2. Update the CHANGELOG.md file
+3. Create a new Git tag with the version number
+4. Push the tag to trigger the release workflow
 
 ```bash
-mintlify dev --port 3333
+# Example for version 1.2.3
+git tag v1.2.3
+git push origin v1.2.3
 ```
 
-If you attempt to run Mintlify on a port that's already in use, it will use the next available port:
+## Performance Considerations
 
-```md
-Port 3000 is already in use. Trying 3001 instead.
-```
+When developing for Transfer Learning, keep these performance considerations in mind:
 
-## Mintlify Versions
+1. **Asynchronous Processing**: Use async/await for I/O-bound operations
+2. **Batch Processing**: Implement batching for operations that can be parallelized
+3. **Memory Management**: Be mindful of memory usage, especially when processing large videos
+4. **Caching**: Implement caching for expensive operations
+5. **Monitoring**: Add appropriate metrics collection for new features
 
-Please note that each CLI release is associated with a specific version of Mintlify. If your local website doesn't align with the production version, please update the CLI:
+## Getting Help
 
-<CodeGroup>
+If you need help with development:
 
-```bash npm
-npm i -g mintlify@latest
-```
+- Check the existing documentation
+- Look at the test suite for examples
+- Open an issue on GitHub with questions
+- Join the community Discord server
 
-```bash yarn
-yarn global upgrade mintlify
-```
-
-</CodeGroup>
-
-## Validating Links
-
-The CLI can assist with validating reference links made in your documentation. To identify any broken links, use the following command:
-
-```bash
-mintlify broken-links
-```
-
-## Deployment
-
-<Tip>
-  Unlimited editors available under the [Pro
-  Plan](https://mintlify.com/pricing) and above.
-</Tip>
-
-If the deployment is successful, you should see the following:
-
-<Frame>
-  <img src="/images/checks-passed.png" style={{ borderRadius: '0.5rem' }} />
-</Frame>
-
-## Code Formatting
-
-We suggest using extensions on your IDE to recognize and format MDX. If you're a VSCode user, consider the [MDX VSCode extension](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx) for syntax highlighting, and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) for code formatting.
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title='Error: Could not load the "sharp" module using the darwin-arm64 runtime'>
-
-    This may be due to an outdated version of node. Try the following:
-    1. Remove the currently-installed version of mintlify: `npm remove -g mintlify`
-    2. Upgrade to Node v19 or higher.
-    3. Reinstall mintlify: `npm install -g mintlify`
-  </Accordion>
-
-  <Accordion title="Issue: Encountering an unknown error">
-  
-    Solution: Go to the root of your device and delete the \~/.mintlify folder. Afterwards, run `mintlify dev` again.
-  </Accordion>
-</AccordionGroup>
-
-Curious about what changed in the CLI version? [Check out the CLI changelog.](https://www.npmjs.com/package/mintlify?activeTab=versions)
+<CardGroup>
+  <Card
+    title="API Reference"
+    icon="book"
+    href="/api-reference/introduction"
+  >
+    Explore the API documentation
+  </Card>
+  <Card
+    title="CLI Commands"
+    icon="terminal"
+    href="/cli/overview"
+  >
+    Learn about the CLI commands
+  </Card>
+  <Card
+    title="Optimization"
+    icon="bolt"
+    href="/advanced/optimization"
+  >
+    Performance optimization techniques
+  </Card>
+</CardGroup>

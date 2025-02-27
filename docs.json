@@ -85,7 +85,7 @@
         },
         {
           "anchor": "Documentation",
-          "href": "/introduction",
+          "href": "https://docs.example.com/introduction",
           "icon": "book-open-cover"
         }
       ]
@@ -105,7 +105,7 @@
     "primary": {
       "type": "button",
       "label": "Get Started",
-      "href": "/quickstart"
+      "href": "https://docs.example.com/quickstart"
     }
   },
   "footer": {

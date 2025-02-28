@@ -80,7 +80,7 @@
       "anchors": [
         {
           "anchor": "GitHub",
-          "href": "https://github.com/Wearer-Lab/Transfert-Learning",
+          "href": "https://github.com/Wearer-Lab/transfer-learning",
           "icon": "github"
         },
         {
@@ -110,7 +110,7 @@
   },
   "footer": {
     "socials": {
-      "github": "https://github.com/Wearer-Lab/Transfert-Learning"
+      "github": "https://github.com/Wearer-Lab/transfer-learning"
     }
   }
 }

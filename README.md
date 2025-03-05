@@ -49,6 +49,21 @@ mintlify dev
 
 3. Visit http://localhost:3000 to preview the documentation.
 
+## Package Management
+
+Transfer Learning uses UV as its package manager for faster, more reliable dependency management:
+
+```bash
+# Install UV
+pip install uv
+
+# Install dependencies with UV
+uv pip install -e .
+
+# Install development dependencies
+uv pip install -e ".[dev]"
+```
+
 ## Building and Deploying
 
 The documentation is automatically built and deployed when changes are pushed to the main branch.

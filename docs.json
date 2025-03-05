@@ -40,6 +40,7 @@
             "pages": [
               "advanced/configuration",
               "advanced/monitoring",
+              "advanced/monitoring-dashboard",
               "advanced/optimization"
             ]
           }

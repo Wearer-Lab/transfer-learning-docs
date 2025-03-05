@@ -1,0 +1,108 @@
+---
+title: Monitoring Dashboard
+description: "Real-time monitoring dashboard for Transfer Learning"
+---
+
+# Monitoring Dashboard
+
+Transfer Learning includes a real-time monitoring dashboard that provides insights into processing performance, resource usage, and system health.
+
+## Dashboard Overview
+
+The monitoring dashboard provides a comprehensive view of your Transfer Learning operations:
+
+<Frame>
+  <img src="/images/monitoring-dashboard.png" alt="Transfer Learning Monitoring Dashboard" />
+</Frame>
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="Real-time Metrics" icon="chart-line" color="#4f46e5">
+    View real-time metrics for processing performance, resource usage, and system health.
+  </Card>
+  <Card title="Historical Data" icon="clock" color="#0ea5e9">
+    Access historical data to identify trends and patterns over time.
+  </Card>
+  <Card title="Alert Management" icon="bell" color="#ef4444">
+    Configure and manage alerts for critical events and performance thresholds.
+  </Card>
+  <Card title="Resource Monitoring" icon="server" color="#10b981">
+    Monitor CPU, memory, disk, and network usage during video processing.
+  </Card>
+</CardGroup>
+
+## Accessing the Dashboard
+
+You can access the monitoring dashboard using the following command:
+
+```bash
+transfer-learning monitor dashboard
+```
+
+This will start the dashboard server and open it in your default web browser. By default, the dashboard is available at `http://localhost:8501`.
+
+## Dashboard Sections
+
+### Processing Overview
+
+The Processing Overview section provides a high-level view of your Transfer Learning operations:
+
+- **Active Jobs**: Currently running processing jobs
+- **Completed Jobs**: Recently completed jobs
+- **Failed Jobs**: Jobs that encountered errors
+- **Queue Status**: Jobs waiting in the processing queue
+
+### Performance Metrics
+
+The Performance Metrics section displays detailed metrics for video processing:
+
+- **Processing Time**: Time taken to process videos
+- **Frames Per Second**: Processing rate for frame extraction
+- **API Response Times**: Response times for external API calls
+- **Batch Processing Efficiency**: Efficiency of batch processing operations
+
+### Resource Usage
+
+The Resource Usage section shows system resource utilization:
+
+- **CPU Usage**: CPU utilization during processing
+- **Memory Usage**: Memory consumption
+- **Disk I/O**: Disk read/write operations
+- **Network Usage**: Network bandwidth utilization
+
+### Error Tracking
+
+The Error Tracking section provides information about errors and exceptions:
+
+- **Error Rates**: Error rates by command and operation
+- **Error Types**: Distribution of error types
+- **Error Timeline**: Timeline of errors over time
+- **Retry Statistics**: Statistics for retry attempts
+
+## Configuration
+
+You can configure the monitoring dashboard using environment variables or the `.env` file:
+
+```bash
+# Dashboard configuration
+DASHBOARD_PORT=8501
+DASHBOARD_HOST=0.0.0.0
+DASHBOARD_THEME=light
+DASHBOARD_REFRESH_INTERVAL=5
+```
+
+## Integration with External Monitoring
+
+Transfer Learning can integrate with external monitoring systems:
+
+- **Prometheus**: Export metrics to Prometheus
+- **Grafana**: Visualize metrics in Grafana dashboards
+- **ELK Stack**: Send logs to Elasticsearch for analysis in Kibana
+- **DataDog**: Send metrics and logs to DataDog
+
+## Related Documentation
+
+- [Monitoring and Metrics](/advanced/monitoring)
+- [Configuration](/advanced/configuration)
+- [CLI Utilities](/cli/utilities) 

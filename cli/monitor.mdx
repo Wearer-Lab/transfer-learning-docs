@@ -1,0 +1,176 @@
+---
+title: 'Monitor Command'
+description: 'CLI reference for the monitor command to view real-time metrics'
+---
+
+# Monitor Command
+
+The `monitor` command provides real-time visualization of processing metrics and system performance through an interactive dashboard.
+
+## Usage
+
+```bash
+transfer-learning monitor [OPTIONS]
+```
+
+## Options
+
+<ResponseField name="--video-id" type="string">
+  Filter metrics for a specific video ID
+</ResponseField>
+
+<ResponseField name="--refresh-rate" type="float" default="2.0">
+  Dashboard refresh rate in seconds
+</ResponseField>
+
+<ResponseField name="--show-history" type="boolean" default="false">
+  Show historical metrics for the specified video ID
+</ResponseField>
+
+## Examples
+
+### Monitor Current Processing
+
+```bash
+transfer-learning monitor
+```
+
+This will display a real-time dashboard showing:
+- Current video processing progress
+- System resource usage (CPU, Memory, Disk, Network)
+- Performance metrics (latency, throughput)
+- API call statistics
+- Custom metrics
+
+### Monitor Specific Video
+
+```bash
+transfer-learning monitor --video-id=video_123
+```
+
+Shows metrics filtered for the specified video ID.
+
+### View Historical Metrics
+
+```bash
+transfer-learning monitor --video-id=video_123 --show-history
+```
+
+Displays historical metrics for the specified video, including:
+- Processing duration
+- Resource usage trends
+- Performance statistics
+- Error counts
+- Custom metrics history
+
+### Customize Refresh Rate
+
+```bash
+transfer-learning monitor --refresh-rate=5.0
+```
+
+Updates the dashboard every 5 seconds instead of the default 2 seconds.
+
+## Dashboard Sections
+
+### 1. Header
+- Current video ID
+- Processing duration
+- Frames processed/total
+
+### 2. Performance Metrics
+- Processing latency (min/max/avg)
+- Throughput (frames/sec)
+- Operation timings
+- Cache hit/miss rates
+
+### 3. System Resources
+- CPU usage percentage
+- Memory usage
+- Disk I/O
+- Network traffic
+- GPU utilization (if available)
+
+### 4. API Statistics
+- Calls per endpoint
+- Response times
+- Error rates
+- Rate limits
+
+### 5. Custom Metrics
+- User-defined metrics
+- Processing-specific stats
+- Quality metrics
+
+## Keyboard Shortcuts
+
+| Key | Action |
+|-----|--------|
+| q | Quit dashboard |
+| r | Force refresh |
+| h | Toggle help |
+| c | Clear screen |
+| f | Toggle full screen |
+
+## Configuration
+
+The monitor command respects the following configuration settings from your `.env` file:
+
+```bash
+# Enable/disable monitoring
+ENABLE_MONITORING=true
+
+# Default refresh rate
+METRICS_REFRESH_RATE=2.0
+
+# Metrics storage directory
+METRICS_DIR=metrics
+
+# Log level for monitoring
+MONITOR_LOG_LEVEL=INFO
+```
+
+## Best Practices
+
+1. **Resource Usage**: Monitor system resources during processing to identify bottlenecks:
+   ```bash
+   transfer-learning monitor --refresh-rate=1.0
+   ```
+
+2. **Performance Analysis**: Track historical metrics to analyze performance trends:
+   ```bash
+   transfer-learning monitor --video-id=video_123 --show-history
+   ```
+
+3. **Real-time Debugging**: Use the monitor command during development to catch issues early:
+   ```bash
+   transfer-learning monitor --refresh-rate=0.5
+   ```
+
+4. **Production Monitoring**: Set appropriate refresh rates for production monitoring:
+   ```bash
+   transfer-learning monitor --refresh-rate=5.0
+   ```
+
+## Troubleshooting
+
+### Dashboard Not Updating
+- Check if monitoring is enabled in your `.env` file
+- Verify the metrics directory exists and is writable
+- Ensure the refresh rate is not too low for your system
+
+### Missing Metrics
+- Confirm the video ID is correct
+- Check if metrics collection is enabled
+- Verify the metrics file exists in the metrics directory
+
+### High Resource Usage
+- Increase the refresh rate to reduce system load
+- Consider disabling certain metrics if not needed
+- Monitor fewer metrics simultaneously
+
+## Related Commands
+
+- [process](/cli/process) - Process a video
+- [guide](/cli/guide) - Generate a guide from video
+- [config](/cli/config) - Configure monitoring settings 

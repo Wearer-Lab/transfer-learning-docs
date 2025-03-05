@@ -1,232 +1,321 @@
 ---
-title: Monitoring
-description: "Monitoring and metrics collection for Transfer Learning"
+title: 'Monitoring & Metrics'
+description: 'Comprehensive monitoring and metrics tracking for video processing pipeline'
 ---
 
-# Monitoring and Metrics
+# Monitoring & Metrics
 
-Transfer Learning includes comprehensive monitoring and metrics collection capabilities to help you track performance, usage, and potential issues. This page covers how to use and extend these monitoring features.
+The Transfer Learning Video Processing Pipeline includes comprehensive monitoring and metrics tracking capabilities to help you understand performance, resource usage, and processing status.
 
-<Note>
-Monitoring is a critical component of the Transfer Learning CLI, providing real-time insights into processing performance, resource usage, and potential issues. The built-in monitoring system helps ensure reliable operation and optimal performance for video processing pipelines.
-</Note>
+## Real-time Dashboard
 
-## Logging System
-
-Transfer Learning uses a structured logging system that records information about operations, errors, and performance metrics.
-
-### Log Levels
-
-The following log levels are available:
-
-- `DEBUG`: Detailed debugging information
-- `INFO`: General information about operations
-- `WARNING`: Warning messages for potential issues
-- `ERROR`: Error messages for failures
-- `CRITICAL`: Critical errors that require immediate attention
-
-### Log Configuration
-
-You can configure logging through environment variables:
-
-```
-LOG_LEVEL=DEBUG
-LOGS_DIR=logs/
-```
-
-### Log File Structure
-
-Logs are stored in the `logs/` directory with the following structure:
-
-```
-logs/
-├── transfer-learning.log        # Main log file
-├── transfer-learning.error.log  # Error log file
-└── daily/
-    ├── transfer-learning-2023-02-25.log
-    └── transfer-learning-2023-02-26.log
-```
-
-### Viewing Logs
-
-You can view logs using standard tools:
+The pipeline provides a beautiful real-time dashboard powered by Rich, accessible through the CLI:
 
 ```bash
-# View the main log file
-cat logs/transfer-learning.log
-
-# View only error logs
-cat logs/transfer-learning.error.log
-
-# Follow logs in real-time
-tail -f logs/transfer-learning.log
+transfer-learning monitor
 ```
+
+### Dashboard Options
+
+<ParamField query="video_id" type="string">
+  Filter metrics for a specific video ID
+</ParamField>
+
+<ParamField query="refresh_rate" type="number" default="2.0">
+  Dashboard refresh rate in seconds
+</ParamField>
+
+<ParamField query="show_history" type="boolean" default="false">
+  Show historical metrics instead of real-time data
+</ParamField>
+
+### Dashboard Sections
+
+The dashboard is divided into several panels:
+
+1. **Header Panel**
+   - Current video being processed
+   - Processing duration
+   - Frame progress
+
+2. **Performance Metrics**
+   - Mean and P95 latency
+   - Throughput statistics
+   - Total processing time
+
+3. **System Resources**
+   - CPU usage (color-coded)
+   - Memory usage (color-coded)
+   - Disk usage
+   - Network I/O
+   - GPU metrics (if available)
+
+4. **API Statistics**
+   - API call counts
+   - Mean latency per API
+   - Success/failure rates
+
+5. **Custom Metrics**
+   - User-defined metrics
+   - Application-specific KPIs
 
 ## Metrics Collection
 
-Transfer Learning collects various metrics to help you understand performance and usage patterns.
+### System Metrics
 
-### Enabling Metrics
-
-Metrics collection is enabled by default. You can disable it by setting:
-
-```
-ENABLE_METRICS=False
-```
-
-### Metrics Storage
-
-Metrics are stored in the `metrics/` directory in JSON format:
-
-```
-metrics/
-├── performance/
-│   ├── 2023-02-25/
-│   │   ├── process_video_1.json
-│   │   └── generate_guide_1.json
-│   └── 2023-02-26/
-│       ├── process_video_1.json
-│       └── youtube_guide_1.json
-├── usage/
-│   ├── daily_usage.json
-│   └── command_usage.json
-└── errors/
-    └── error_counts.json
-```
-
-### Available Metrics
-
-Transfer Learning collects the following types of metrics:
-
-#### Performance Metrics
-
-- Processing time per video
-- Processing time per frame
-- API response times
-- Memory usage
-- CPU usage
-
-#### Usage Metrics
-
-- Command usage counts
-- Video processing counts
-- Guide generation counts
-- Total processed frames
-- Total processing time
-
-#### Error Metrics
-
-- Error counts by type
-- Error rates
-- Retry counts
-
-### Viewing Metrics
-
-You can view metrics using the built-in metrics viewer:
-
-```bash
-# View all metrics
-transfer-learning metrics
-
-# View performance metrics
-transfer-learning metrics --type performance
-
-# View usage metrics
-transfer-learning metrics --type usage
-
-# View metrics for a specific date
-transfer-learning metrics --date 2023-02-25
-```
-
-## Real-time Monitoring
-
-Transfer Learning provides real-time monitoring capabilities during command execution.
-
-### Progress Bars
-
-Commands display progress bars with the following information:
-
-- Overall progress
-- Current operation
-- Estimated time remaining
-- Processing rate (frames/second)
-- Resource usage
-
-### Status Updates
-
-Status updates are displayed during long-running operations:
-
-- Current batch being processed
-- Completed batches
-- Failed batches
-- Retry attempts
-
-## Monitoring API
-
-For advanced use cases, you can access the monitoring system programmatically:
+The pipeline automatically tracks system resource usage:
 
 ```python
 from transfer_learning.monitoring.metrics import MetricsTracker
-from transfer_learning.monitoring.logger import setup_logger
 
-# Set up logger
-logger = setup_logger("my_component")
+metrics = MetricsTracker()
+metrics.start_processing("video_id")
 
-# Create a metrics tracker
-metrics = MetricsTracker("my_operation")
-
-# Start tracking an operation
-with metrics.track("process_frames"):
-    # Perform operation
-    process_frames()
-
-# Log metrics
-metrics.add_value("frames_processed", 100)
-metrics.add_timing("processing_time", 45.2)
-
-# Save metrics
-metrics.save()
-
-# Log messages
-logger.info("Operation completed successfully")
-logger.error("An error occurred", extra={"error_type": "api_error"})
+# System metrics are collected automatically
+# Access current metrics
+system_metrics = metrics.current_metrics.system
+print(f"CPU Usage: {system_metrics.cpu_percent}%")
 ```
 
-## Alerting
+### Performance Metrics
 
-Transfer Learning can be configured to send alerts for critical issues:
+Track performance-related metrics:
 
-### Email Alerts
+```python
+# Record API call latency
+metrics.record_api_call("openai_vision", 150.5)  # 150.5ms
 
-Configure email alerts by setting:
+# Add custom processing time
+metrics.current_metrics.performance.add_processing_time(200.5)
 
-```
-ENABLE_EMAIL_ALERTS=True
-EMAIL_ALERT_RECIPIENT=your-email@example.com
-EMAIL_ALERT_LEVEL=ERROR
-```
-
-### Webhook Alerts
-
-Configure webhook alerts (e.g., for Slack or Discord) by setting:
-
-```
-ENABLE_WEBHOOK_ALERTS=True
-WEBHOOK_URL=https://hooks.slack.com/services/your-webhook-url
-WEBHOOK_ALERT_LEVEL=WARNING
+# Record throughput
+metrics.current_metrics.performance.add_throughput(10.5)  # 10.5 items/second
 ```
 
-## Performance Optimization
+### Custom Metrics
 
-Monitoring data can help identify performance bottlenecks:
+Add your own custom metrics:
 
-1. Check the `performance/` metrics to identify slow operations
-2. Look for patterns in error logs
-3. Adjust batch size and concurrency based on resource usage metrics
-4. Consider upgrading hardware for resource-intensive operations
+```python
+# Add a custom metric
+metrics.add_custom_metric("quality_score", 0.95)
+metrics.add_custom_metric("detected_objects", ["person", "car", "dog"])
+```
 
-## Related Documentation
+## Using the Timer
 
-- [Configuration](/advanced/configuration)
-- [Optimization](/advanced/optimization)
-- [CLI Utilities](/cli/utilities) 
+The pipeline provides a convenient Timer context manager for timing operations:
+
+```python
+from transfer_learning.monitoring.metrics import Timer
+
+# Time a processing operation
+with Timer(metrics_tracker, "frame_processing", operation_type="processing"):
+    process_frame(frame)
+
+# Time an API call
+with Timer(metrics_tracker, "openai_api", operation_type="api"):
+    response = openai.ChatCompletion.create(...)
+```
+
+## Metrics Storage
+
+Metrics are automatically saved to JSON files in dated directories:
+
+```
+metrics/
+  └── 2024-03-05/
+      └── video_123_20240305_143022.json
+```
+
+### Metrics File Format
+
+```json
+{
+  "video_id": "video_123",
+  "start_time": "2024-03-05T14:30:22.123456",
+  "end_time": "2024-03-05T14:35:42.987654",
+  "frame_count": 150,
+  "processed_frames": 150,
+  "performance_metrics": {
+    "latency_stats": {
+      "mean": 125.5,
+      "median": 120.0,
+      "p95": 180.5,
+      "p99": 200.0
+    },
+    "throughput_stats": {
+      "mean": 10.5,
+      "max": 15.2
+    }
+  },
+  "system_metrics": {
+    "cpu_percent": 45.2,
+    "memory_percent": 62.8,
+    "disk_usage_percent": 78.5,
+    "network_bytes_sent": 1024,
+    "network_bytes_recv": 2048,
+    "gpu_utilization": 85.2,
+    "gpu_memory_used": 4096
+  },
+  "custom_metrics": {
+    "quality_score": 0.95,
+    "detected_objects": ["person", "car", "dog"]
+  },
+  "system_info": {
+    "platform": "Darwin-24.3.0-x86_64",
+    "python_version": "3.10.0",
+    "processor": "i386",
+    "memory_total": 17179869184,
+    "disk_total": 994662584320
+  }
+}
+```
+
+## Historical Analysis
+
+View historical metrics for a specific video:
+
+```bash
+transfer-learning monitor --video-id=video_123 --show-history
+```
+
+This will load and display the most recent metrics file for the specified video ID.
+
+## Best Practices
+
+1. **Start/End Tracking**
+   ```python
+   metrics.start_processing("video_id")
+   try:
+       # Your processing code
+   finally:
+       metrics.end_processing()
+   ```
+
+2. **Use Timers for Operations**
+   ```python
+   with Timer(metrics, "operation_name"):
+       # Your operation code
+   ```
+
+3. **Add Custom Metrics**
+   ```python
+   metrics.add_custom_metric("key", value)
+   ```
+
+4. **Monitor Resource Usage**
+   - Keep an eye on system resource usage
+   - Set up alerts for high resource utilization
+   - Use color-coded indicators in the dashboard
+
+5. **Regular Cleanup**
+   ```bash
+   # Clean up old metrics files
+   transfer-learning cleanup --max-age-hours=168  # 1 week
+   ```
+
+## Configuration
+
+Configure monitoring settings in your `.env` file:
+
+```bash
+ENABLE_MONITORING=true
+LOG_LEVEL=INFO
+METRICS_ENABLED=true
+```
+
+Or use the config command:
+
+```bash
+transfer-learning config
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **High Resource Usage**
+   - Check system metrics panel for bottlenecks
+   - Adjust batch sizes and concurrent processing
+   - Consider GPU offloading if available
+
+2. **Slow Processing**
+   - Monitor API latencies in the dashboard
+   - Check network I/O metrics
+   - Optimize batch sizes and caching
+
+3. **Missing Metrics**
+   - Ensure metrics tracking is enabled
+   - Check file permissions in metrics directory
+   - Verify proper start/end processing calls
+
+### Debug Mode
+
+Enable debug logging for more detailed information:
+
+```bash
+LOG_LEVEL=DEBUG transfer-learning monitor
+```
+
+## API Reference
+
+### MetricsTracker
+
+<ResponseField name="start_processing" type="method">
+  Start tracking metrics for a video processing run
+  
+  <Expandable title="Parameters">
+    <ResponseField name="video_id" type="string">
+      Unique identifier for the video being processed
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="end_processing" type="method">
+  End tracking metrics and save results
+</ResponseField>
+
+<ResponseField name="record_api_call" type="method">
+  Record an API call with its latency
+  
+  <Expandable title="Parameters">
+    <ResponseField name="api_name" type="string">
+      Name of the API being called
+    </ResponseField>
+    <ResponseField name="latency_ms" type="float">
+      Latency of the API call in milliseconds
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="add_custom_metric" type="method">
+  Add a custom metric
+  
+  <Expandable title="Parameters">
+    <ResponseField name="name" type="string">
+      Name of the custom metric
+    </ResponseField>
+    <ResponseField name="value" type="any">
+      Value of the custom metric
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Timer
+
+<ResponseField name="__init__" type="constructor">
+  Initialize a timer for operation tracking
+  
+  <Expandable title="Parameters">
+    <ResponseField name="metrics_tracker" type="MetricsTracker">
+      Instance of MetricsTracker
+    </ResponseField>
+    <ResponseField name="metric_name" type="string">
+      Name of the metric to track
+    </ResponseField>
+    <ResponseField name="operation_type" type="string">
+      Type of operation ('processing' or 'api')
+    </ResponseField>
+  </Expandable>
+</ResponseField> 

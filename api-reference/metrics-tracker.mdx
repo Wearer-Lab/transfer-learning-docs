@@ -1,0 +1,332 @@
+---
+title: 'Metrics Tracker'
+description: 'API reference for the metrics tracking and monitoring system'
+---
+
+# Metrics Tracker API
+
+The metrics tracking system provides comprehensive monitoring and performance tracking capabilities for the video processing pipeline.
+
+## Classes
+
+### MetricsTracker
+
+Main class for tracking and storing processing metrics.
+
+```python
+from transfer_learning.monitoring.metrics import MetricsTracker
+
+metrics = MetricsTracker(metrics_dir="metrics", sampling_interval=5)
+```
+
+<ResponseField name="__init__" type="constructor">
+  Initialize a new metrics tracker
+  
+  <Expandable title="Parameters">
+    <ResponseField name="metrics_dir" type="string" default="metrics">
+      Directory to store metrics files
+    </ResponseField>
+    <ResponseField name="sampling_interval" type="int" default="5">
+      Interval in seconds for system resource sampling
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+#### Methods
+
+<ResponseField name="start_processing" type="method">
+  Start tracking metrics for a video processing run
+  
+  <Expandable title="Parameters">
+    <ResponseField name="video_id" type="string">
+      Unique identifier for the video being processed
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="end_processing" type="method">
+  End tracking metrics and save results
+</ResponseField>
+
+<ResponseField name="update_metrics" type="method">
+  Update current metrics with new values
+  
+  <Expandable title="Parameters">
+    <ResponseField name="**kwargs" type="dict">
+      Key-value pairs of metrics to update
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="record_api_call" type="method">
+  Record an API call with its latency
+  
+  <Expandable title="Parameters">
+    <ResponseField name="api_name" type="string">
+      Name of the API being called
+    </ResponseField>
+    <ResponseField name="latency_ms" type="float">
+      Latency of the API call in milliseconds
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="add_custom_metric" type="method">
+  Add a custom metric
+  
+  <Expandable title="Parameters">
+    <ResponseField name="name" type="string">
+      Name of the custom metric
+    </ResponseField>
+    <ResponseField name="value" type="any">
+      Value of the custom metric
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="get_metrics" type="method">
+  Get current metrics as dictionary
+  
+  <Expandable title="Returns">
+    <ResponseField name="metrics" type="Dict">
+      Current metrics data
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Timer
+
+Context manager for timing operations with enhanced metrics tracking.
+
+```python
+from transfer_learning.monitoring.metrics import Timer
+
+with Timer(metrics_tracker, "operation_name", operation_type="processing"):
+    # Your operation code here
+```
+
+<ResponseField name="__init__" type="constructor">
+  Initialize a timer for operation tracking
+  
+  <Expandable title="Parameters">
+    <ResponseField name="metrics_tracker" type="MetricsTracker">
+      Instance of MetricsTracker
+    </ResponseField>
+    <ResponseField name="metric_name" type="string">
+      Name of the metric to track
+    </ResponseField>
+    <ResponseField name="operation_type" type="string" default="processing">
+      Type of operation ('processing' or 'api')
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### SystemMetrics
+
+Data class for system resource metrics.
+
+```python
+@dataclass
+class SystemMetrics:
+    cpu_percent: float = 0.0
+    memory_percent: float = 0.0
+    disk_usage_percent: float = 0.0
+    network_bytes_sent: int = 0
+    network_bytes_recv: int = 0
+    gpu_utilization: Optional[float] = None
+    gpu_memory_used: Optional[float] = None
+```
+
+### PerformanceMetrics
+
+Data class for performance-related metrics.
+
+```python
+@dataclass
+class PerformanceMetrics:
+    latency_ms: List[float] = field(default_factory=list)
+    throughput: List[float] = field(default_factory=list)
+    processing_time_ms: List[float] = field(default_factory=list)
+    api_calls: Dict[str, int] = field(default_factory=lambda: defaultdict(int))
+    api_latencies: Dict[str, List[float]] = field(default_factory=lambda: defaultdict(list))
+```
+
+#### Methods
+
+<ResponseField name="add_latency" type="method">
+  Add a latency measurement
+  
+  <Expandable title="Parameters">
+    <ResponseField name="latency_ms" type="float">
+      Latency in milliseconds
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="add_throughput" type="method">
+  Add a throughput measurement
+  
+  <Expandable title="Parameters">
+    <ResponseField name="items_per_second" type="float">
+      Processing rate in items per second
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="add_processing_time" type="method">
+  Add a processing time measurement
+  
+  <Expandable title="Parameters">
+    <ResponseField name="time_ms" type="float">
+      Processing time in milliseconds
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="record_api_call" type="method">
+  Record an API call with its latency
+  
+  <Expandable title="Parameters">
+    <ResponseField name="api_name" type="string">
+      Name of the API
+    </ResponseField>
+    <ResponseField name="latency_ms" type="float">
+      API call latency in milliseconds
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+## Examples
+
+### Basic Usage
+
+```python
+from transfer_learning.monitoring.metrics import MetricsTracker, Timer
+
+# Initialize metrics tracker
+metrics = MetricsTracker()
+
+# Start tracking a video processing run
+metrics.start_processing("video_123")
+
+try:
+    # Use timer to track operation duration
+    with Timer(metrics, "frame_processing"):
+        process_frames()
+    
+    # Record an API call
+    with Timer(metrics, "openai_api", operation_type="api"):
+        response = openai.ChatCompletion.create(...)
+    
+    # Add custom metrics
+    metrics.add_custom_metric("quality_score", 0.95)
+    
+finally:
+    # End tracking and save metrics
+    metrics.end_processing()
+```
+
+### Accessing Metrics
+
+```python
+# Get current metrics
+current_metrics = metrics.get_metrics()
+
+# Access specific metrics
+system_metrics = current_metrics["system_metrics"]
+performance_metrics = current_metrics["performance_metrics"]
+custom_metrics = current_metrics["custom_metrics"]
+
+print(f"CPU Usage: {system_metrics['cpu_percent']}%")
+print(f"Mean Latency: {performance_metrics['latency_stats']['mean']}ms")
+```
+
+### Custom Metrics
+
+```python
+# Add various types of custom metrics
+metrics.add_custom_metric("detected_objects", ["person", "car", "dog"])
+metrics.add_custom_metric("confidence_score", 0.98)
+metrics.add_custom_metric("processing_stats", {
+    "frames_processed": 150,
+    "objects_detected": 45,
+    "processing_time": 12.5
+})
+```
+
+### System Resource Monitoring
+
+```python
+# System metrics are collected automatically
+metrics.start_processing("video_123")
+
+# Access current system metrics
+system = metrics.current_metrics.system
+print(f"CPU: {system.cpu_percent}%")
+print(f"Memory: {system.memory_percent}%")
+print(f"Disk: {system.disk_usage_percent}%")
+print(f"Network ↑: {system.network_bytes_sent / 1024:.1f} KB/s")
+print(f"Network ↓: {system.network_bytes_recv / 1024:.1f} KB/s")
+
+if system.gpu_utilization is not None:
+    print(f"GPU: {system.gpu_utilization}%")
+```
+
+### Performance Tracking
+
+```python
+# Track performance metrics
+performance = metrics.current_metrics.performance
+
+# Add latency measurement
+performance.add_latency(125.5)
+
+# Add throughput measurement
+performance.add_throughput(10.5)
+
+# Add processing time
+performance.add_processing_time(200.5)
+
+# Record API call
+performance.record_api_call("openai_vision", 150.5)
+```
+
+## Best Practices
+
+1. Always use `try`/`finally` to ensure proper cleanup:
+   ```python
+   metrics.start_processing("video_id")
+   try:
+       # Your processing code
+   finally:
+       metrics.end_processing()
+   ```
+
+2. Use the Timer context manager for accurate timing:
+   ```python
+   with Timer(metrics, "operation_name"):
+       # Your operation code
+   ```
+
+3. Add custom metrics for application-specific monitoring:
+   ```python
+   metrics.add_custom_metric("key", value)
+   ```
+
+4. Monitor system resources for performance optimization:
+   ```python
+   if metrics.current_metrics.system.cpu_percent > 80:
+       # Adjust processing parameters
+       reduce_batch_size()
+   ```
+
+5. Use appropriate operation types for timing:
+   ```python
+   # For processing operations
+   with Timer(metrics, "process_frames", operation_type="processing"):
+       process_frames()
+   
+   # For API calls
+   with Timer(metrics, "openai_api", operation_type="api"):
+       call_api()
+   ``` 

@@ -3,11 +3,11 @@
   "theme": "mint",
   "name": "Transfer Learning Video Processing",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#0069ED",
+    "light": "#4D9CFF",
+    "dark": "#0046A0"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/favicon.png",
   "navigation": {
     "tabs": [
       {
@@ -72,6 +72,12 @@
               "api-reference/validation",
               "api-reference/path-utils",
               "api-reference/monitoring"
+            ]
+          },
+          {
+            "group": "Metrics Tracker",
+            "pages": [
+              "api-reference/metrics-tracker"
             ]
           }
         ]

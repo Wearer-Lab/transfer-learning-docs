@@ -9,43 +9,97 @@ This guide will help you get started with Transfer Learning, a powerful CLI tool
 
 ## Installation
 
-<Steps>
-  <Step title="Clone the Repository">
-    ```bash
-    git clone https://github.com/Wearer-Lab/transfer-learning.git
-    cd transfer-learning
-    ```
-  </Step>
-  <Step title="Set Up Virtual Environment">
-    ```bash
-    python -m venv .venv
-    source .venv/bin/activate  # On Windows, use `.venv\Scripts\activate`
-    ```
-  </Step>
-  <Step title="Install UV Package Manager">
-    ```bash
-    pip install uv
-    ```
-    
-    <Tip>
-    UV is a modern Python package manager that provides significant performance improvements over traditional pip. Transfer Learning uses UV for faster, more reliable dependency management.
-    </Tip>
-  </Step>
-  <Step title="Install Dependencies">
-    ```bash
-    uv pip install -e .
-    ```
-  </Step>
-  <Step title="Set Up API Keys">
-    Create a `.env` file in the project root directory:
-    
-    ```bash
-    echo "OPENAI_API_KEY=your-api-key-here" > .env
-    ```
-    
-    <Tip>You need an OpenAI API key with access to GPT-4 Vision models for full functionality.</Tip>
-  </Step>
-</Steps>
+<Tabs>
+  <Tab title="Automated Installation">
+    Use our automated installation scripts for a quick setup:
+
+    <CodeGroup>
+      <CodeBlock title="Unix (macOS/Linux)">
+      ```bash
+      git clone https://github.com/Wearer-Lab/transfer-learning.git
+      cd transfer-learning
+      chmod +x scripts/install.sh
+      ./scripts/install.sh
+      ```
+      </CodeBlock>
+      <CodeBlock title="Windows">
+      ```cmd
+      git clone https://github.com/Wearer-Lab/transfer-learning.git
+      cd transfer-learning
+      scripts\install.bat
+      ```
+      </CodeBlock>
+    </CodeGroup>
+
+    The installation scripts will:
+    - Check Python version compatibility
+    - Create and activate a virtual environment
+    - Install UV package manager
+    - Install project dependencies
+    - Set up required directories
+    - Create a default configuration file
+
+    <Note>
+    After installation, you'll need to add your OpenAI API key to the `.env` file.
+    </Note>
+  </Tab>
+
+  <Tab title="Manual Installation">
+    <Steps>
+      <Step title="Clone the Repository">
+        ```bash
+        git clone https://github.com/Wearer-Lab/transfer-learning.git
+        cd transfer-learning
+        ```
+      </Step>
+      <Step title="Set Up Virtual Environment">
+        ```bash
+        python -m venv .venv
+        source .venv/bin/activate  # On Windows, use `.venv\Scripts\activate`
+        ```
+      </Step>
+      <Step title="Install UV Package Manager">
+        ```bash
+        pip install uv
+        ```
+        
+        <Tip>
+        UV is a modern Python package manager that provides significant performance improvements over traditional pip. Transfer Learning uses UV for faster, more reliable dependency management.
+        </Tip>
+      </Step>
+      <Step title="Install Dependencies">
+        ```bash
+        uv pip install -e .
+        ```
+      </Step>
+      <Step title="Set Up API Keys">
+        Create a `.env` file in the project root directory:
+        
+        ```bash
+        echo "OPENAI_API_KEY=your-api-key-here" > .env
+        ```
+        
+        <Tip>You need an OpenAI API key with access to GPT-4 Vision models for full functionality.</Tip>
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+## Command Alias
+
+Transfer Learning provides a convenient command alias `tl` that can be used as a shorthand for the `transfer-learning` command. All examples in this guide can use either form:
+
+```bash
+# Using the full command
+transfer-learning process-video video.mp4
+
+# Using the alias
+tl process-video video.mp4
+```
+
+<Note>
+The `tl` command alias is available after installation. If you want to make it available globally, follow the instructions in the [CLI Overview](/cli/overview#global-installation).
+</Note>
 
 ## Basic Usage
 

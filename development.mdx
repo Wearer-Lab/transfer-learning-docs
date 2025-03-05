@@ -46,6 +46,39 @@ transfer-learning/
 
 ## Development Setup
 
+### Installation Scripts
+
+Transfer Learning provides automated installation scripts in the `scripts` directory:
+
+- `install.sh` - For Unix-based systems (Linux, macOS)
+- `install.bat` - For Windows systems
+
+These scripts handle the complete setup process:
+
+```bash
+# On Unix-based systems
+chmod +x scripts/install.sh
+./scripts/install.sh
+
+# On Windows
+scripts\install.bat
+```
+
+The installation scripts perform the following tasks:
+- Verify Python version compatibility (3.9+)
+- Create and activate a virtual environment
+- Install UV package manager
+- Install project dependencies
+- Set up required directories (data, logs, metrics, cache)
+- Create a default `.env` configuration file
+- Install development dependencies (optional)
+
+To modify or extend the installation process:
+1. Edit `scripts/install.sh` or `scripts/install.bat`
+2. Update the directory creation in the `create_directories` function
+3. Modify the default configuration in the `create_env_file` function
+4. Add new dependencies or setup steps as needed
+
 <Steps>
   <Step title="Clone the Repository">
     ```bash
@@ -123,6 +156,16 @@ transfer-learning/
     ```bash
     transfer-learning process-video path/to/video.mp4
     ```
+
+    You can also use the convenient `tl` command alias:
+
+    ```bash
+    tl process-video path/to/video.mp4
+    ```
+
+    The `tl` command is available through shell scripts in the `scripts` directory:
+    - `scripts/tl` for Unix-like systems (macOS/Linux)
+    - `scripts/tl.bat` for Windows
   </Accordion>
 </AccordionGroup>
 

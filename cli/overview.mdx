@@ -15,6 +15,42 @@ All Transfer Learning commands follow this general structure:
 transfer-learning [command] [arguments] [options]
 ```
 
+## Command Alias
+
+Transfer Learning provides a convenient command alias `tl` that can be used instead of typing out the full `transfer-learning` command. The `tl` command is available through shell scripts in the `scripts` directory:
+
+- For Unix-like systems (macOS/Linux): `scripts/tl`
+- For Windows: `scripts/tl.bat`
+
+### Usage
+
+```bash
+tl [command] [arguments] [options]
+```
+
+The `tl` command works exactly the same as the `transfer-learning` command, but with a shorter name. For example:
+
+```bash
+# Using the full command
+transfer-learning process-video video.mp4
+
+# Using the alias
+tl process-video video.mp4
+```
+
+### Global Installation
+
+To make the `tl` command available globally:
+
+#### Unix-like Systems (macOS/Linux)
+```bash
+# Create a symbolic link in /usr/local/bin
+sudo ln -s "$(pwd)/scripts/tl" /usr/local/bin/tl
+```
+
+#### Windows
+Add the `scripts` directory to your PATH environment variable or create a symbolic link in a directory that's already in your PATH.
+
 ## Available Commands
 
 <CardGroup cols={2}>

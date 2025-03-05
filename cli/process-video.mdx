@@ -5,7 +5,7 @@ description: "Process a local video file, extracting frames and analyzing conten
 
 # Process Video Command
 
-The `process-video` command extracts frames from a local video file at specified intervals and analyzes their content. This is the first step in the video processing pipeline.
+The `process-video` command extracts frames from a local video file at specified intervals and analyzes their content. This is the first step in the video processing pipeline. The command includes automatic video compression for files that exceed the configured size limit.
 
 ## Usage
 
@@ -29,7 +29,21 @@ transfer-learning process-video PATH [OPTIONS]
 | `--frame-interval INTEGER` | Interval between frame extractions in seconds | 30 |
 | `--skip-existing` | Skip processing if output already exists | False |
 | `--force` | Force processing even if output already exists | False |
+| `--max-size INTEGER` | Maximum video size in MB (overrides config) | From config |
 | `--help` | Show help message and exit | - |
+
+## File Size Management
+
+The command automatically handles large video files:
+
+1. Checks file size against configured limits (default: 500MB)
+2. For files exceeding the limit:
+   - Attempts compression while preserving quality
+   - Maintains original resolution and frame rate
+   - Uses H.264 codec for efficient compression
+   - Shows progress during compression
+3. Uses compressed version for further processing
+4. Stores compressed files in temporary directory
 
 ## Examples
 
@@ -37,6 +51,12 @@ transfer-learning process-video PATH [OPTIONS]
 
 ```bash
 transfer-learning process-video path/to/video.mp4
+```
+
+### Process a video with custom size limit
+
+```bash
+transfer-learning process-video path/to/video.mp4 --max-size 1000
 ```
 
 ### Process a video with custom frame interval
@@ -92,7 +112,10 @@ The `metadata.json` file contains information about the video and the extraction
   },
   "fps": 30,
   "extraction_time": "2023-02-25T12:34:56",
-  "processing_time": 45.2
+  "processing_time": 45.2,
+  "compression_applied": false,
+  "original_size_mb": 450.5,
+  "final_size_mb": 450.5
 }
 ```
 

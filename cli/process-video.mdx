@@ -1,123 +1,109 @@
 ---
-title: Process Video
-description: "Process a local video file, extracting frames and analyzing content"
+title: 'Process Video'
+description: 'Process local video files to extract frames and generate analysis'
 ---
 
-# Process Video Command
+# Video Processing
 
-The `process-video` command extracts frames from a local video file at specified intervals and analyzes their content. This is the first step in the video processing pipeline. The command includes automatic video compression for files that exceed the configured size limit.
+The `process-video` command handles local video files, extracting frames and preparing them for analysis. It includes intelligent file size management and compression features.
+
+## Prerequisites
+
+- FFmpeg installed on your system (required for video processing)
+- Sufficient disk space for temporary files
+- Supported video format (mp4, avi, mov, etc.)
 
 ## Usage
 
 ```bash
-transfer-learning process-video PATH [OPTIONS]
+transfer-learning process-video <video_path> [options]
 ```
 
-## Arguments
+## File Size Management
 
-| Argument | Description |
-| -------- | ----------- |
-| `PATH` | Path to the video file or directory containing video files |
+The tool automatically handles large video files:
+
+1. **Size Check**: Verifies if the video size exceeds configured limits
+2. **Compression**: If needed, compresses the video while preserving quality
+   - Uses FFmpeg with H.264 codec
+   - Intelligent bitrate calculation
+   - Progress tracking during compression
+   - Quality preservation algorithms
+3. **Temporary Files**: Manages compressed versions in system temp directory
+4. **Cleanup**: Automatically removes temporary files after processing
 
 ## Options
 
 | Option | Description | Default |
-| ------ | ----------- | ------- |
-| `--output-dir TEXT` | Output directory for results | `data/` |
-| `--batch-size INTEGER` | Number of frames to process in each batch | From config |
-| `--max-concurrent INTEGER` | Maximum number of concurrent batches | From config |
-| `--frame-interval INTEGER` | Interval between frame extractions in seconds | 30 |
-| `--skip-existing` | Skip processing if output already exists | False |
-| `--force` | Force processing even if output already exists | False |
-| `--max-size INTEGER` | Maximum video size in MB (overrides config) | From config |
-| `--help` | Show help message and exit | - |
-
-## File Size Management
-
-The command automatically handles large video files:
-
-1. Checks file size against configured limits (default: 500MB)
-2. For files exceeding the limit:
-   - Attempts compression while preserving quality
-   - Maintains original resolution and frame rate
-   - Uses H.264 codec for efficient compression
-   - Shows progress during compression
-3. Uses compressed version for further processing
-4. Stores compressed files in temporary directory
+|--------|-------------|---------|
+| `--output-dir` | Directory to save processed files | `./output` |
+| `--batch-size` | Number of frames to process at once | 30 |
+| `--max-size` | Maximum video size in MB | 500 |
+| `--frame-interval` | Frames to skip between extractions | 30 |
 
 ## Examples
 
-### Process a single video file
-
+Basic usage:
 ```bash
 transfer-learning process-video path/to/video.mp4
 ```
 
-### Process a video with custom size limit
-
+With custom options:
 ```bash
-transfer-learning process-video path/to/video.mp4 --max-size 1000
+transfer-learning process-video path/to/video.mp4 \
+  --output-dir ./my_output \
+  --batch-size 50 \
+  --max-size 1000 \
+  --frame-interval 60
 ```
 
-### Process a video with custom frame interval
+## Output Format
 
-```bash
-transfer-learning process-video path/to/video.mp4 --frame-interval 10
+The command creates the following directory structure:
 ```
-
-### Process a video with custom output directory
-
-```bash
-transfer-learning process-video path/to/video.mp4 --output-dir my-output
+output/
+├── frames/          # Extracted video frames
+├── metadata.json    # Video metadata including compression info
+└── processing_log.txt   # Detailed processing log
 ```
-
-### Process all videos in a directory
-
-```bash
-transfer-learning process-video path/to/videos/
-```
-
-## Output
-
-The command creates a directory structure in the output directory with the following components:
-
-```
-output_dir/
-├── video_name/
-│   ├── frames/
-│   │   ├── frame_0001.jpg
-│   │   ├── frame_0002.jpg
-│   │   └── ...
-│   ├── metadata.json
-│   └── analysis.json
-```
-
-- `frames/`: Directory containing extracted frames as JPEG images
-- `metadata.json`: Metadata about the video and extraction process
-- `analysis.json`: Analysis of the extracted frames
 
 ## Metadata Format
 
-The `metadata.json` file contains information about the video and the extraction process:
-
 ```json
 {
-  "video_path": "path/to/video.mp4",
-  "duration": 120.5,
-  "frame_count": 10,
-  "frame_interval": 30,
-  "resolution": {
-    "width": 1920,
-    "height": 1080
+  "video_info": {
+    "original_size": "1200MB",
+    "compressed_size": "480MB",
+    "compression_ratio": 2.5,
+    "codec_used": "libx264",
+    "duration": "10:30",
+    "resolution": "1920x1080",
+    "fps": 30
   },
-  "fps": 30,
-  "extraction_time": "2023-02-25T12:34:56",
-  "processing_time": 45.2,
-  "compression_applied": false,
-  "original_size_mb": 450.5,
-  "final_size_mb": 450.5
+  "processing": {
+    "frames_extracted": 150,
+    "frame_interval": 30,
+    "compression_applied": true,
+    "processing_time": "5:30"
+  }
 }
 ```
+
+## Error Handling
+
+The command includes robust error handling:
+- Validates video format before processing
+- Checks FFmpeg availability
+- Monitors compression progress
+- Provides detailed error messages
+- Implements fallback options for compression
+
+## Best Practices
+
+1. Ensure sufficient disk space (2-3x video size)
+2. Use recommended video formats (MP4 with H.264)
+3. Monitor the processing log for details
+4. Keep FFmpeg updated for best performance
 
 ## Next Steps
 
